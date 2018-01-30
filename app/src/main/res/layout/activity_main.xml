@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="a2.thesis.com.caketory.MainActivity">
+
+    <TextView
+        android:id="@+id/text_bestSelling"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/w_bestSelling"
+        android:textColor="@color/colorTitle"
+        android:textSize="18sp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_product"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_bestSelling"
+        android:clipToPadding="false"
+        android:padding="5dp"
+        android:scrollbars="none" />
+
+    <TextView
+        android:id="@+id/text_categories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recycler_product"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/w_categories"
+        android:textColor="@color/colorTitle"
+        android:textSize="18sp" />
+
+
+</RelativeLayout>
