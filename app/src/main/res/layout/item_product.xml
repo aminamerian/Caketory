@@ -32,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
                 android:paddingBottom="8dp"
                 android:textColor="@color/colorTitle"
                 android:textSize="13sp" />

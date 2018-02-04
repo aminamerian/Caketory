@@ -6,7 +6,7 @@ package a2.thesis.com.caketory;
 
 public class Constants {
 
-    static String ServerAddress = "http://192.168.1.2:85";
+    static String ServerAddress = "http://192.168.1.4:85";
     private static String rootAddress = ServerAddress + "/Caketory/admin";
 
     static String productAPI = rootAddress + "/api/get-all-products.php";

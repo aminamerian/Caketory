@@ -7,4 +7,9 @@
     <color name="colorTitle">#6a6a6a</color>
     <color name="colorPrice">#66BA6C</color>
     <color name="colorDivider">#22000000</color>
+
+    <color name="bg_launcher_activity">#FFF</color>
+
+    <color name="bg_main_toolbar_collapse">#99000000</color>
+
 </resources>

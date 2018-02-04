@@ -1,40 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="false"
     tools:context="a2.thesis.com.caketory.MainActivity">
 
-    <TextView
-        android:id="@+id/text_bestSelling"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="12dp"
-        android:layout_marginTop="15dp"
-        android:text="@string/w_bestSelling"
-        android:textColor="@color/colorTitle"
-        android:textSize="18sp" />
+        android:layout_height="@dimen/app_bar_height"
+        android:fitsSystemWindows="false"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_product"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/text_bestSelling"
-        android:clipToPadding="false"
-        android:padding="5dp"
-        android:scrollbars="none" />
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:collapsedTitleGravity="start"
+            app:contentScrim="@color/bg_main_toolbar_collapse"
+            app:expandedTitleGravity="start|bottom"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-    <TextView
-        android:id="@+id/text_categories"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/recycler_product"
-        android:layout_marginEnd="12dp"
-        android:layout_marginTop="15dp"
-        android:text="@string/w_categories"
-        android:textColor="@color/colorTitle"
-        android:textSize="18sp" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier=".3">
 
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/slider_viewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-</RelativeLayout>
+                <me.relex.circleindicator.CircleIndicator
+                    android:id="@+id/indicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_alignParentBottom="true"
+                    android:layoutDirection="ltr"/>
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_marginTop="@dimen/status_bar_height"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <include layout="@layout/content_main" />
+
+</android.support.design.widget.CoordinatorLayout>
