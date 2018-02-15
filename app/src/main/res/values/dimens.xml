@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="status_bar_height">24dp</dimen>
-    <dimen name="app_bar_height">250dp</dimen>
+    <dimen name="slider_height">180dp</dimen>
+    <dimen name="nav_header_height">150dp</dimen>
 
 </resources>

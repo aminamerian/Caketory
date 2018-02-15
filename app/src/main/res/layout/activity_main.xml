@@ -1,61 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="false"
     tools:context="a2.thesis.com.caketory.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/app_bar_height"
-        android:fitsSystemWindows="false"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/toolbar_layout"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            app:collapsedTitleGravity="start"
-            app:contentScrim="@color/bg_main_toolbar_collapse"
-            app:expandedTitleGravity="start|bottom"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            android:layout_height="?attr/actionBarSize"
+            app:layout_scrollFlags="snap|enterAlways"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-            <RelativeLayout
+            <TextView
+                android:id="@+id/text_toolbarTitle"
+                style="@style/toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier=".3">
+                android:text="@string/app_name_fa" />
 
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/slider_viewPager"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <me.relex.circleindicator.CircleIndicator
-                    android:id="@+id/indicator"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_alignParentBottom="true"
-                    android:layoutDirection="ltr"/>
-
-            </RelativeLayout>
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_marginTop="@dimen/status_bar_height"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-        </android.support.design.widget.CollapsingToolbarLayout>
+        </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main" />
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/appbar_layout">
 
-</android.support.design.widget.CoordinatorLayout>
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:id="@+id/layout_slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/slider_height"
+                    android:background="@color/colorPrimary"
+                    android:elevation="4dp">
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/slider_viewPager"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <me.relex.circleindicator.CircleIndicator
+                        android:id="@+id/indicator"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_alignParentBottom="true"
+                        android:layoutDirection="ltr" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/layout_slider">
+
+                    <TextView
+                        android:id="@+id/text_bestSelling"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/w_bestSelling"
+                        android:textColor="@color/colorTitle"
+                        android:textSize="18sp" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_product"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/text_bestSelling"
+                        android:clipToPadding="false"
+                        android:padding="5dp"
+                        android:scrollbars="none" />
+
+                    <TextView
+                        android:id="@+id/text_categories"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/recycler_product"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/w_categories"
+                        android:textColor="@color/colorTitle"
+                        android:textSize="18sp" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_category"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/text_categories"
+                        android:clipToPadding="false"
+                        android:padding="5dp"
+                        android:scrollbars="none" />
+                </RelativeLayout>
+            </RelativeLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+        <android.support.design.widget.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/nav_header"
+            app:menu="@menu/drawer_main"/>
+    </android.support.v4.widget.DrawerLayout>
+</RelativeLayout>

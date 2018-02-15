@@ -2,6 +2,7 @@ package a2.thesis.com.caketory.Adapter;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import a2.thesis.com.caketory.Constants;
+import a2.thesis.com.caketory.Entity.ItemCategory;
 import a2.thesis.com.caketory.Entity.ItemProduct;
 import a2.thesis.com.caketory.Network.VolleySingleton;
 import a2.thesis.com.caketory.R;
@@ -25,39 +27,30 @@ import a2.thesis.com.caketory.R;
  * Created by Amin on 24/01/2018.
  */
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHolder> {
+public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyViewHolder> {
 
     private Context context;
-    private List<ItemProduct> productsList;
-    private Typeface yekanFont;
-
+    private List<ItemCategory> categoryList;
     private ImageLoader imageLoader;
 
-    public ProductAdapter(Context context, List<ItemProduct> productsList) {
+    public CategoryAdapter(Context context, List<ItemCategory> categoryList) {
         this.context = context;
-        this.productsList = productsList;
-        yekanFont = Typeface.createFromAsset(context.getAssets(), "fonts/b_yekan.ttf");
-
+        this.categoryList = categoryList;
         imageLoader = VolleySingleton.getInstance(context).getImageLoader();
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category, parent, false);
         return new MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        ItemProduct itemProduct = productsList.get(position);
 
-        holder.name.setText(itemProduct.getProductName());
-        holder.price.setText(itemProduct.getProductPrice()+ " تومان");
+        ItemCategory itemCategory = categoryList.get(position);
 
-        holder.name.setTypeface(yekanFont);
-        holder.price.setTypeface(yekanFont);
-
-        String imagePath = itemProduct.getProductImage();
+        String imagePath = itemCategory.getCategoryImage();
         if (imagePath != null) {
             imageLoader.get(imagePath, new ImageLoader.ImageListener() {
                 @Override
@@ -76,21 +69,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
 
     @Override
     public int getItemCount() {
-        return productsList.size();
+        return categoryList.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-
         ImageView image;
-        TextView name, price;
 
         MyViewHolder(View itemView) {
             super(itemView);
-
-            image = itemView.findViewById(R.id.card_image);
-            name = itemView.findViewById(R.id.card_title);
-            price = itemView.findViewById(R.id.card_price);
-
+            image = itemView.findViewById(R.id.card_image_cat);
         }
     }
 }

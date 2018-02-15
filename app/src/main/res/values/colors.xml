@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#F50057</color>
-    <color name="colorPrimaryDark">#F50057</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#F1383E</color>
+    <color name="colorPrimaryDark">#C52A2E</color>
+    <color name="colorAccent">#FF1744</color>
 
     <color name="colorTitle">#6a6a6a</color>
     <color name="colorPrice">#66BA6C</color>
@@ -12,4 +12,14 @@
 
     <color name="bg_main_toolbar_collapse">#99000000</color>
 
+    <color name="toolbar_title" >#ffffff</color>
+
+
+
+
+    <color name="trans_dark_gray">#99000000</color>
+    <color name="trans_light_gray">#66000000</color>
+
+    <color name="nav_icon_color">@color/trans_light_gray</color>
+    <color name="nav_text_color">@android:color/holo_blue_dark</color>
 </resources>

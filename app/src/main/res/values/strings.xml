@@ -1,7 +1,18 @@
 <resources>
     <string name="app_name">Caketory</string>
+    <string name="app_name_fa">کیکطوری</string>
 
     <string name="w_bestSelling">محصولات پرفروش</string>
     <string name="w_categories">انواع محصولات</string>
+
+    <string name="drawer_open">open</string>
+    <string name="drawer_close">close</string>
+
+    <string name="nav_row_1">انواع محصولات</string>
+    <string name="nav_row_2">موارد مورد علاقه</string>
+    <string name="nav_row_3">کیک</string>
+    <string name="nav_row_4">شیرینی خشک</string>
+    <string name="nav_row_5">شیرینی تر</string>
+    <string name="nav_row_6">دسر</string>
 
 </resources>
