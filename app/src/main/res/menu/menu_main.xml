@@ -5,7 +5,15 @@
     <item
         android:id="@+id/item_badge"
         android:title=""
-        app:actionLayout="@layout/menu_badge"
+        android:orderInCategory="101"
+        android:icon="@drawable/ic_shopping_cart"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_search"
+        android:title=""
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_search"
         app:showAsAction="ifRoom" />
 
 </menu>

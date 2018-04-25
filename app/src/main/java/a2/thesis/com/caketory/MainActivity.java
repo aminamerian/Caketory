@@ -1,11 +1,13 @@
 package a2.thesis.com.caketory;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,7 +42,7 @@ import a2.thesis.com.caketory.Entity.ItemProduct;
 import a2.thesis.com.caketory.Network.VolleySingleton;
 import me.relex.circleindicator.CircleIndicator;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ProductAdapter.ProductAdapterListener {
 
     private ProductAdapter productAdapter;
     private CategoryAdapter categoryAdapter;
@@ -49,9 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private List<ItemCategory> categoryList;
 
     private DrawerLayout drawerLayout;
-    private TextView badgeText;
-
-    private Typeface yekanFont;
+    //private TextView badgeText;
 
     public ViewPager viewPager;
 
@@ -61,13 +61,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        yekanFont = Typeface.createFromAsset(getAssets(), "fonts/b_yekan.ttf");
+        Typeface yekanFont = Typeface.createFromAsset(getAssets(), "fonts/b_yekan.ttf");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        getSupportActionBar().setDisplayShowTitleEnabled(false);  //hide actionBar title
-
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(false);  //hide actionBar title
+        }
         TextView toolbarTitleText = findViewById(R.id.text_toolbarTitle);
         TextView bestSellingText = findViewById(R.id.text_bestSelling);
         TextView categoriesText = findViewById(R.id.text_categories);
@@ -93,9 +94,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         RecyclerView productRecycler = findViewById(R.id.recycler_product);
-
         productsList = new ArrayList<>();
-        productAdapter = new ProductAdapter(this, productsList);
+        productAdapter = new ProductAdapter(productRecycler.getContext(), this, productsList);
 //        productRecycler.setLayoutManager(new GridLayoutManager(this, 2));
         productRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         productRecycler.setItemAnimator(new DefaultItemAnimator());
@@ -103,7 +103,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         RecyclerView categoryRecycler = findViewById(R.id.recycler_category);
-
         categoryList = new ArrayList<>();
         categoryAdapter = new CategoryAdapter(this, categoryList);
         //set nested scrolling disable to recyclerView work smoothly inside the nestedScrollView
@@ -126,19 +125,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        MenuItem badge = menu.findItem(R.id.item_badge);
+        //TODO uncomment below if you want to have badge for shopping cart icon
+        // MenuItem badge = menu.findItem(R.id.item_badge);
 
-        badgeText = badge.getActionView().findViewById(R.id.menu_badge);
-        badgeText.setTypeface(yekanFont);
-
-        badge.getActionView().setOnClickListener(new View.OnClickListener() {
-            int c = 0;
-
-            @Override
-            public void onClick(View v) {
-                badgeText.setText(String.valueOf(++c));
-            }
-        });
+//        badgeText = badge.getActionView().findViewById(R.id.menu_badge);
+//        badgeText.setTypeface(yekanFont);
+//
+//        badge.getActionView().setOnClickListener(new View.OnClickListener() {
+//            int c = 0;
+//
+//            @Override
+//            public void onClick(View v) {
+//                badgeText.setText(String.valueOf(++c));
+//            }
+//        });
         return true;
     }
 
@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 mObject = array.getJSONObject(i).getJSONObject("product");
                 long id = mObject.getLong("product_id");
                 String name = mObject.getString("product_name");
-                String image = Constants.imagesDirectoryR + mObject.getString("product_image");
+                String image = Constants.imagesDirectory + mObject.getString("product_image");
                 int price = mObject.getInt("product_price");
                 productsList.add(new ItemProduct(id, name, image, price));
             }
@@ -239,11 +239,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         //navigation drawer's items click listener
-        if (id == R.id.nav_fav) {
-
-        }
+//        if (id == R.id.nav_fav) {
+//        }
         //close drawer after any selection
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onItemClicked(long id) {
+        Intent intent = new Intent(this, ProductActivity.class);
+        intent.putExtra("PRODUCT_ID", id);
+        startActivity(intent);
     }
 }

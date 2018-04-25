@@ -29,7 +29,7 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                startActivity(new Intent(SplashActivity.this, AuthActivity.class));
                 //calling finish method to not get back to splash screen later by pressing back button
                 finish();
             }

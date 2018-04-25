@@ -22,4 +22,6 @@
 
     <color name="nav_icon_color">@color/trans_light_gray</color>
     <color name="nav_text_color">@android:color/holo_blue_dark</color>
+
+    <color name="btn_addToBasket">#F1F8E9</color>
 </resources>

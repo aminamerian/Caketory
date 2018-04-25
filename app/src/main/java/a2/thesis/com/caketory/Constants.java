@@ -6,7 +6,7 @@ package a2.thesis.com.caketory;
 
 public class Constants {
 
-    static String ServerAddress = "http://192.168.1.4:85";
+    static String ServerAddress = "http://192.168.1.101:85";
     private static String rootAddress = ServerAddress + "/Caketory/admin";
 
     private static String ACCESS_KEY = "12345";
@@ -15,9 +15,13 @@ public class Constants {
     static String productAPI = rootAddress + "/api/get-all-products.php" + accessKey;
     static String categoryAPI = rootAddress + "/api/get-all-categories.php" + accessKey;
 
-
-    static String imagesDirectoryR = rootAddress + "/";
-    //TODO change above line to below, after modifying product_image field in database to just the name of images, not directory
     static String imagesDirectory = rootAddress + "/upload/images/";
 
+
+    public static final String SEND_SMS = rootAddress + "/api/authentication/send_sms.php";
+    public static final String VERIFY_OTP = rootAddress + "/api/authentication/verify_otp.php";
+
+    // SMS provider identification
+    // It should match with your SMS gateway origin
+    public static final String SMS_ORIGIN = "50002015242298";
 }
