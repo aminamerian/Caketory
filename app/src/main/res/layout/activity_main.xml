@@ -49,7 +49,6 @@
                     android:id="@+id/layout_slider"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/slider_height"
-                    android:background="@color/colorPrimary"
                     android:elevation="4dp">
 
                     <android.support.v4.view.ViewPager

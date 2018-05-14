@@ -5,26 +5,51 @@ package a2.thesis.com.caketory.Entity;
  */
 
 public class ItemProduct {
-    private long productID;
+    private long productId;
     private String productName;
-    private long categoryID;
+    private long categoryId;
     private int productPrice;
     private String productImage;
+    private String productImage2;
     private String productDescription;
+    private String productDesDetail;
+    private int productStock;
 
-    public ItemProduct(long productID, String productName, String productImage, int productPrice) {
-        this.productID = productID;
+    public ItemProduct(long productId, String productName, String productImage, int productPrice) {
+        this.productId = productId;
         this.productName = productName;
         this.productImage = productImage;
         this.productPrice = productPrice;
     }
 
-    public long getProductID() {
-        return productID;
+    public ItemProduct(long productId, String productName, String productImage, int productPrice, String productDescription) {
+        this.productId = productId;
+        this.productName = productName;
+        this.productImage = productImage;
+        this.productPrice = productPrice;
+        this.productDescription = productDescription;
     }
 
-    public void setProductID(long productID) {
-        this.productID = productID;
+    public ItemProduct(long productId, String productName, long categoryId,
+                       String productImage, String productImage2, int productPrice,
+                       int productStock, String productDescription, String productDesDetail) {
+        this.productId = productId;
+        this.productName = productName;
+        this.categoryId = categoryId;
+        this.productImage = productImage;
+        this.setProductImage2(productImage2);
+        this.productPrice = productPrice;
+        this.setProductStock(productStock);
+        this.productDescription = productDescription;
+        this.setProductDesDetail(productDesDetail);
+    }
+
+    public long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(long productId) {
+        this.productId = productId;
     }
 
     public String getProductName() {
@@ -35,12 +60,12 @@ public class ItemProduct {
         this.productName = productName;
     }
 
-    public long getCategoryID() {
-        return categoryID;
+    public long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategoryID(long categoryID) {
-        this.categoryID = categoryID;
+    public void setCategoryId(long categoryId) {
+        this.categoryId = categoryId;
     }
 
     public int getProductPrice() {
@@ -65,5 +90,29 @@ public class ItemProduct {
 
     public void setProductDescription(String productDescription) {
         this.productDescription = productDescription;
+    }
+
+    public int getProductStock() {
+        return productStock;
+    }
+
+    public void setProductStock(int productStock) {
+        this.productStock = productStock;
+    }
+
+    public String getProductImage2() {
+        return productImage2;
+    }
+
+    public void setProductImage2(String productImage2) {
+        this.productImage2 = productImage2;
+    }
+
+    public String getProductDesDetail() {
+        return productDesDetail;
+    }
+
+    public void setProductDesDetail(String productDesDetail) {
+        this.productDesDetail = productDesDetail;
     }
 }

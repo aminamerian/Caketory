@@ -21,6 +21,11 @@
         <item name="android:textSize">24sp</item>
     </style>
 
+    <style name="cat_toolbar_title" parent="@style/TextAppearance.AppCompat.Title">
+        <item name="android:textColor">@color/toolbar_title</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

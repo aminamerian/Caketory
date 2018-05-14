@@ -1,15 +1,19 @@
 package a2.thesis.com.caketory.Fragment;
 
+import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -24,6 +28,7 @@ import java.util.Map;
 
 import a2.thesis.com.caketory.AuthActivity;
 import a2.thesis.com.caketory.Constants;
+import a2.thesis.com.caketory.MainActivity;
 import a2.thesis.com.caketory.Network.VolleySingleton;
 import a2.thesis.com.caketory.R;
 
@@ -32,7 +37,7 @@ public class SendSmsFragment extends Fragment {
 
     ViewPager mPager;
     EditText input;
-    boolean requestSent = false;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,8 +52,13 @@ public class SendSmsFragment extends Fragment {
             mPager = ((AuthActivity) getActivity()).getViewPager();
         }
 
+        Typeface yekanFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/b_yekan.ttf");
+
         input = view.findViewById(R.id.input_phoneNumber);
-        Button submit = view.findViewById(R.id.button_submit);
+        TextView textView = view.findViewById(R.id.text_submit);
+        CardView submit = view.findViewById(R.id.cart_submit);
+        textView.setTypeface(yekanFont);
+        input.setTypeface(yekanFont);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,14 +100,16 @@ public class SendSmsFragment extends Fragment {
 
                     // Parsing json object response
                     int error = responseObj.getInt("error");
-                    final String message = responseObj.getString("message");
 
                     // Checking for error, if not error SMS is initiated
                     // Device should receive it shortly
                     if (error == 0) {
                         mPager.setCurrentItem(1);
-
+                    } else if (error == 4) {
+                        //entered phone number is already active
+                        startActivity(new Intent(getActivity(), MainActivity.class));
                     } else {
+                        final String message = responseObj.getString("message");
                         input.setError(message);
                     }
                 } catch (JSONException e) {
@@ -118,10 +130,7 @@ public class SendSmsFragment extends Fragment {
                 }};
             }
         };
-        if (!requestSent) {
             VolleySingleton.getInstance(getActivity()).addToRequestQueue(strReq);
-            requestSent = true;
-        }
     }
 
     private static boolean isValidMobileNumber(String mobile) {

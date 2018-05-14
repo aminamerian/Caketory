@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -42,7 +43,8 @@ import a2.thesis.com.caketory.Entity.ItemProduct;
 import a2.thesis.com.caketory.Network.VolleySingleton;
 import me.relex.circleindicator.CircleIndicator;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ProductAdapter.ProductAdapterListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        ProductAdapter.ProductAdapterListener, CategoryAdapter.CategoryAdapterListener {
 
     private ProductAdapter productAdapter;
     private CategoryAdapter categoryAdapter;
@@ -52,8 +54,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private DrawerLayout drawerLayout;
     //private TextView badgeText;
-
-    public ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,13 +85,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         //set drawer's item click listener
         navigationView.setNavigationItemSelectedListener(this);
-
-
-        viewPager = findViewById(R.id.slider_viewPager);
-        viewPager.setAdapter(new SliderViewPagerAdapter(this));
-        CircleIndicator indicator = findViewById(R.id.indicator);
-        indicator.setViewPager(viewPager);
-
 
         RecyclerView productRecycler = findViewById(R.id.recycler_product);
         productsList = new ArrayList<>();
@@ -157,7 +150,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void fetchData() {
-        JsonObjectRequest requestProduct, requestCat;
+        JsonObjectRequest requestHeaderImage, requestProduct, requestCat;
+
+        requestHeaderImage = new JsonObjectRequest(Request.Method.GET, Constants.headerImageAPI, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                populateHeaderImageList(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("amina2", "sec1: " + error.toString());
+            }
+        });
 
         requestProduct = new JsonObjectRequest(Request.Method.GET, Constants.productAPI, null, new Response.Listener<JSONObject>() {
             @Override
@@ -167,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("amina2", "sec1: " + error.toString());
+                Log.d("amina2", "sec2: " + error.toString());
             }
         });
 
@@ -179,12 +184,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("amina2", "sec2: " + error.toString());
+                Log.d("amina2", "sec3: " + error.toString());
             }
         });
 
+        VolleySingleton.getInstance(this).addToRequestQueue(requestHeaderImage);
         VolleySingleton.getInstance(this).addToRequestQueue(requestProduct);
         VolleySingleton.getInstance(this).addToRequestQueue(requestCat);
+    }
+
+    private void populateHeaderImageList(JSONObject response) {
+        ArrayList<String> images = new ArrayList<>();
+        try {
+            JSONArray array = response.getJSONArray("data");
+            for (int i = 0; i < array.length(); i++) {
+                images.add(array.getString(i));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        ViewPager viewPager = findViewById(R.id.slider_viewPager);
+        viewPager.setAdapter(new SliderViewPagerAdapter(this, images));
+        CircleIndicator indicator = findViewById(R.id.indicator);
+        indicator.setViewPager(viewPager);
     }
 
     private void populateProductList(JSONObject response) {
@@ -195,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 mObject = array.getJSONObject(i).getJSONObject("product");
                 long id = mObject.getLong("product_id");
                 String name = mObject.getString("product_name");
-                String image = Constants.imagesDirectory + mObject.getString("product_image");
+                String image = mObject.getString("product_image");
                 int price = mObject.getInt("product_price");
                 productsList.add(new ItemProduct(id, name, image, price));
             }
@@ -214,7 +236,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 mObject = array.getJSONObject(i).getJSONObject("category");
                 long id = mObject.getLong("category_id");
                 String name = mObject.getString("category_name");
-                String image = Constants.imagesDirectory + mObject.getString("category_image");
+                String image = mObject.getString("category_image");
                 categoryList.add(new ItemCategory(id, name, image));
             }
         } catch (JSONException e) {
@@ -250,6 +272,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onItemClicked(long id) {
         Intent intent = new Intent(this, ProductActivity.class);
         intent.putExtra("PRODUCT_ID", id);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onCategoryItemClicked(long id, String name) {
+        Intent intent = new Intent(this, CategoryActivity.class);
+        intent.putExtra("CAT_ID", id);
+        intent.putExtra("CAT_NAME", name);
         startActivity(intent);
     }
 }

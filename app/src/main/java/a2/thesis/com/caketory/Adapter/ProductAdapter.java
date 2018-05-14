@@ -1,7 +1,6 @@
 package a2.thesis.com.caketory.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -18,9 +17,9 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import a2.thesis.com.caketory.Constants;
 import a2.thesis.com.caketory.Entity.ItemProduct;
 import a2.thesis.com.caketory.Network.VolleySingleton;
-import a2.thesis.com.caketory.ProductActivity;
 import a2.thesis.com.caketory.R;
 
 /**
@@ -41,7 +40,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         productAdapterListener = listener;
         this.productsList = productsList;
         yekanFont = Typeface.createFromAsset(context.getAssets(), "fonts/b_yekan.ttf");
-
         imageLoader = VolleySingleton.getInstance(context).getImageLoader();
     }
 
@@ -63,7 +61,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
 
         String imagePath = itemProduct.getProductImage();
         if (imagePath != null) {
-            imageLoader.get(imagePath, new ImageLoader.ImageListener() {
+            imageLoader.get(Constants.imagesDirectory + imagePath, new ImageLoader.ImageListener() {
                 @Override
                 public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
                     // loading itemCategory cover using Glide library - efficient and no lag while scrolling
@@ -80,7 +78,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                productAdapterListener.onItemClicked(productsList.get(holder.getAdapterPosition()).getProductID());
+                productAdapterListener.onItemClicked(productsList.get(holder.getAdapterPosition()).getProductId());
             }
         });
     }

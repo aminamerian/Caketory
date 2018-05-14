@@ -23,6 +23,10 @@
     <string name="title_activity_product">ProductActivity</string>
     <string name="title_activity_main">MainActivity</string>
 
+    <string name="city">امکان سفارش از قنادی دلخواه</string>
+    <string name="verified">فروش با کیفیت تضمینی</string>
+    <string name="store">دسترسی به نزدیک ترین قنادی به شما</string>
+    <string name="shipping">آماده ارسال به محض سفارش</string>
 
     <string name="text">
         To create a dynamic and multi-pane user interface on Android,
@@ -81,5 +85,11 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="next">بعدی</string>
+    <string name="activate">فعال سازی</string>
+    <string name="enterPhoneNumber">شماره تلفن خود را وارد کنید</string>
+    <string name="enterSentCode">کد دریافت شده را وارد کنید</string>
+    <string name="w_ordering">مرتب سازی</string>
+    <string name="w_filtering">فیلترکردن</string>
 
 </resources>

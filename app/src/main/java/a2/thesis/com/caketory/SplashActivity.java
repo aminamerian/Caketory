@@ -4,6 +4,11 @@ import android.animation.Animator;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.Switch;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.airbnb.lottie.LottieAnimationView;
 
@@ -30,7 +35,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animator animator) {
                 startActivity(new Intent(SplashActivity.this, AuthActivity.class));
-                //calling finish method to not get back to splash screen later by pressing back button
+//                calling finish method to not get back to splash screen later by pressing back button
                 finish();
             }
 
@@ -44,7 +49,6 @@ public class SplashActivity extends AppCompatActivity {
 
             }
         });
-
 
     }
 }
