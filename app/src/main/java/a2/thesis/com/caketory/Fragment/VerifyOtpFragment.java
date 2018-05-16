@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -24,15 +23,17 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import a2.thesis.com.caketory.Constants;
+import a2.thesis.com.caketory.Utils.Constants;
 import a2.thesis.com.caketory.MainActivity;
 import a2.thesis.com.caketory.Network.VolleySingleton;
+import a2.thesis.com.caketory.Utils.PrefSingleton;
 import a2.thesis.com.caketory.R;
 
 
 public class VerifyOtpFragment extends Fragment {
 
     EditText input;
+    private Interface2 anInterface;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,6 +41,7 @@ public class VerifyOtpFragment extends Fragment {
 
         Typeface yekanFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/b_yekan.ttf");
 
+        anInterface = (Interface2) getActivity();
         input = view.findViewById(R.id.input_code);
         TextView textView = view.findViewById(R.id.text_submit);
         CardView submit = view.findViewById(R.id.cart_submit);
@@ -67,11 +69,10 @@ public class VerifyOtpFragment extends Fragment {
                     responseObj = new JSONObject(response);
                     // Parsing json object response
                     int error = responseObj.getInt("error");
-                    // Checking for error, if not error SMS is initiated
-                    // Device should receive it shortly
                     if (error == 0) {
-                        //TODO do something with access token
                         String accessToken = responseObj.getString("access_token");
+                        PrefSingleton.getInstance(getActivity()).setUserHaveBeenAuthenticated(true);
+                        PrefSingleton.getInstance(getActivity()).setAccessToken(accessToken);
                         startActivity(new Intent(getActivity(), MainActivity.class));
                     } else {
                         input.setError(responseObj.getString("message"));
@@ -90,12 +91,17 @@ public class VerifyOtpFragment extends Fragment {
             @Override
             protected Map<String, String> getParams() {
                 return new HashMap<String, String>() {{
+                    put("phone_number", anInterface.getPhoneNumber());
                     put("otp", code);
                 }};
             }
         };
 
         VolleySingleton.getInstance(getActivity()).addToRequestQueue(strReq);
+    }
+
+    public interface Interface2 {
+        String getPhoneNumber();
     }
 
 }

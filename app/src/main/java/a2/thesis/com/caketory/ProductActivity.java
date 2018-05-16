@@ -2,7 +2,6 @@ package a2.thesis.com.caketory;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
@@ -21,8 +20,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -36,8 +35,14 @@ import com.bumptech.glide.request.target.Target;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import a2.thesis.com.caketory.Entity.ItemProduct;
 import a2.thesis.com.caketory.Network.VolleySingleton;
+import a2.thesis.com.caketory.Utils.Constants;
+import a2.thesis.com.caketory.Utils.CustomRequest;
+import a2.thesis.com.caketory.Utils.PrefSingleton;
 
 public class ProductActivity extends AppCompatActivity {
 
@@ -158,20 +163,24 @@ public class ProductActivity extends AppCompatActivity {
     }
 
     private void fetchData(long productId) {
-        JsonObjectRequest requestProduct;
-        requestProduct = new JsonObjectRequest(Request.Method.GET, Constants.productAPI +
-                "&product_id=" + productId, null, new Response.Listener<JSONObject>() {
+
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", PrefSingleton.getInstance(this).getAccessToken());
+        params.put("product_id", String.valueOf(productId));
+
+        CustomRequest requestProduct = new CustomRequest(Request.Method.POST, Constants.productAPI, params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 populateProductObject(response);
             }
         }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("amina2", "sec21: " + error.toString());
+            public void onErrorResponse(VolleyError response) {
+                Log.d("amina2", "sec21: " + response.toString());
                 tryAgain();
             }
         });
+
         VolleySingleton.getInstance(this).addToRequestQueue(requestProduct);
     }
 

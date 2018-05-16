@@ -23,7 +23,6 @@
         android:layout_marginTop="30dp"
         android:inputType="phone"
         android:hint="@string/enterPhoneNumber"
-        android:text="09385691662"
         android:textAlignment="center"/>
 
     <android.support.v7.widget.CardView

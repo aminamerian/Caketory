@@ -20,10 +20,9 @@ import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
 
-import a2.thesis.com.caketory.Constants;
+import a2.thesis.com.caketory.Utils.Constants;
 import a2.thesis.com.caketory.Network.VolleySingleton;
 import a2.thesis.com.caketory.R;
-import me.relex.circleindicator.CircleIndicator;
 
 /**
  * Created by Amin on 03/02/2018.

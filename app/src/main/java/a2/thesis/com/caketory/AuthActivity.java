@@ -11,9 +11,10 @@ import android.util.Log;
 import a2.thesis.com.caketory.Fragment.SendSmsFragment;
 import a2.thesis.com.caketory.Fragment.VerifyOtpFragment;
 
-public class AuthActivity extends AppCompatActivity {
+public class AuthActivity extends AppCompatActivity implements SendSmsFragment.Interface1, VerifyOtpFragment.Interface2 {
 
     private ViewPager mPager;
+    private String phoneNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,16 @@ public class AuthActivity extends AppCompatActivity {
 
     public ViewPager getViewPager() {
         return null == mPager ? (ViewPager) findViewById(R.id.viewPager) : mPager;
+    }
+
+    @Override
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    @Override
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     private class MyPagerAdapter extends FragmentPagerAdapter {

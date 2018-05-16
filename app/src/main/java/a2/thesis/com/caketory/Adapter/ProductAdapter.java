@@ -17,7 +17,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-import a2.thesis.com.caketory.Constants;
+import a2.thesis.com.caketory.Utils.Constants;
 import a2.thesis.com.caketory.Entity.ItemProduct;
 import a2.thesis.com.caketory.Network.VolleySingleton;
 import a2.thesis.com.caketory.R;

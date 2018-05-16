@@ -1,6 +1,5 @@
 package a2.thesis.com.caketory.Fragment;
 
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -27,8 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import a2.thesis.com.caketory.AuthActivity;
-import a2.thesis.com.caketory.Constants;
-import a2.thesis.com.caketory.MainActivity;
+import a2.thesis.com.caketory.Utils.Constants;
 import a2.thesis.com.caketory.Network.VolleySingleton;
 import a2.thesis.com.caketory.R;
 
@@ -37,6 +34,7 @@ public class SendSmsFragment extends Fragment {
 
     ViewPager mPager;
     EditText input;
+    private Interface1 anInterface;
 
 
     @Override
@@ -54,6 +52,7 @@ public class SendSmsFragment extends Fragment {
 
         Typeface yekanFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/b_yekan.ttf");
 
+        anInterface = (Interface1) getActivity();
         input = view.findViewById(R.id.input_phoneNumber);
         TextView textView = view.findViewById(R.id.text_submit);
         CardView submit = view.findViewById(R.id.cart_submit);
@@ -101,13 +100,15 @@ public class SendSmsFragment extends Fragment {
                     // Parsing json object response
                     int error = responseObj.getInt("error");
 
-                    // Checking for error, if not error SMS is initiated
+                    // Checking for errors, if not error SMS is initiated
                     // Device should receive it shortly
                     if (error == 0) {
+                        anInterface.setPhoneNumber(phoneNumber);
                         mPager.setCurrentItem(1);
                     } else if (error == 4) {
                         //entered phone number is already active
-                        startActivity(new Intent(getActivity(), MainActivity.class));
+                        final String message = responseObj.getString("message");
+                        input.setError(message);
                     } else {
                         final String message = responseObj.getString("message");
                         input.setError(message);
@@ -126,15 +127,20 @@ public class SendSmsFragment extends Fragment {
             @Override
             protected Map<String, String> getParams() {
                 return new HashMap<String, String>() {{
-                    put("phoneNumber", phoneNumber);
+                    put("phone_number", phoneNumber);
                 }};
             }
         };
-            VolleySingleton.getInstance(getActivity()).addToRequestQueue(strReq);
+
+        VolleySingleton.getInstance(getActivity()).addToRequestQueue(strReq);
     }
 
     private static boolean isValidMobileNumber(String mobile) {
         return mobile.matches("^(09|9)\\d{9}$");
+    }
+
+    public interface Interface1 {
+        void setPhoneNumber(String phoneNumber);
     }
 
 }

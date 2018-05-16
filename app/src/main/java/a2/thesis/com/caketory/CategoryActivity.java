@@ -2,14 +2,11 @@ package a2.thesis.com.caketory;
 
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -17,8 +14,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -29,14 +26,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import a2.thesis.com.caketory.Adapter.CategoryProductsAdapter;
-import a2.thesis.com.caketory.Adapter.ProductAdapter;
-import a2.thesis.com.caketory.Adapter.SliderViewPagerAdapter;
 import a2.thesis.com.caketory.Entity.ItemProduct;
 import a2.thesis.com.caketory.Network.VolleySingleton;
-import me.relex.circleindicator.CircleIndicator;
+import a2.thesis.com.caketory.Utils.Constants;
+import a2.thesis.com.caketory.Utils.CustomRequest;
+import a2.thesis.com.caketory.Utils.PrefSingleton;
 
 public class CategoryActivity extends AppCompatActivity implements CategoryProductsAdapter.CategoryProductsAdapterListener {
 
@@ -104,17 +103,19 @@ public class CategoryActivity extends AppCompatActivity implements CategoryProdu
     }
 
     private void fetchData() {
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", PrefSingleton.getInstance(this).getAccessToken());
+        params.put("category_id", String.valueOf(catId));
 
-        JsonObjectRequest requestCatProducts;
-        requestCatProducts = new JsonObjectRequest(Request.Method.GET, Constants.catProductAPI + "&category_id=" + catId, null, new Response.Listener<JSONObject>() {
+        CustomRequest requestCatProducts = new CustomRequest(Request.Method.POST, Constants.catProductAPI, params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 populateCatProducts(response);
             }
         }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("amina2", "sec6: " + error.toString());
+            public void onErrorResponse(VolleyError response) {
+                Log.d("amina2", "sec6: " + response.toString());
             }
         });
 

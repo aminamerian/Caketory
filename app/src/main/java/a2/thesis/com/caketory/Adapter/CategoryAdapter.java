@@ -1,7 +1,6 @@
 package a2.thesis.com.caketory.Adapter;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -9,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
@@ -17,9 +15,8 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-import a2.thesis.com.caketory.Constants;
+import a2.thesis.com.caketory.Utils.Constants;
 import a2.thesis.com.caketory.Entity.ItemCategory;
-import a2.thesis.com.caketory.Entity.ItemProduct;
 import a2.thesis.com.caketory.Network.VolleySingleton;
 import a2.thesis.com.caketory.R;
 

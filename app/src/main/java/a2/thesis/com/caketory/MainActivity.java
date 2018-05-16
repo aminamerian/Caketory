@@ -21,8 +21,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -33,7 +33,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import a2.thesis.com.caketory.Adapter.CategoryAdapter;
 import a2.thesis.com.caketory.Adapter.ProductAdapter;
@@ -41,6 +43,9 @@ import a2.thesis.com.caketory.Adapter.SliderViewPagerAdapter;
 import a2.thesis.com.caketory.Entity.ItemCategory;
 import a2.thesis.com.caketory.Entity.ItemProduct;
 import a2.thesis.com.caketory.Network.VolleySingleton;
+import a2.thesis.com.caketory.Utils.Constants;
+import a2.thesis.com.caketory.Utils.CustomRequest;
+import a2.thesis.com.caketory.Utils.PrefSingleton;
 import me.relex.circleindicator.CircleIndicator;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
@@ -150,41 +155,45 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void fetchData() {
-        JsonObjectRequest requestHeaderImage, requestProduct, requestCat;
 
-        requestHeaderImage = new JsonObjectRequest(Request.Method.GET, Constants.headerImageAPI, null, new Response.Listener<JSONObject>() {
+        CustomRequest requestHeaderImage, requestProduct, requestCat;
+
+        Map<String, String> accessToken = new HashMap<>();
+        accessToken.put("access_token", PrefSingleton.getInstance(this).getAccessToken());
+
+        requestHeaderImage = new CustomRequest(Request.Method.POST, Constants.headerImageAPI, accessToken, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 populateHeaderImageList(response);
             }
         }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("amina2", "sec1: " + error.toString());
+            public void onErrorResponse(VolleyError response) {
+                Log.d("amina2", "sec1: " + response.toString());
             }
         });
 
-        requestProduct = new JsonObjectRequest(Request.Method.GET, Constants.productAPI, null, new Response.Listener<JSONObject>() {
+        requestProduct = new CustomRequest(Request.Method.POST, Constants.productAPI, accessToken, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 populateProductList(response);
             }
         }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("amina2", "sec2: " + error.toString());
+            public void onErrorResponse(VolleyError response) {
+                Log.d("amina2", "sec2: " + response.toString());
             }
         });
 
-        requestCat = new JsonObjectRequest(Request.Method.GET, Constants.categoryAPI, null, new Response.Listener<JSONObject>() {
+        requestCat = new CustomRequest(Request.Method.POST, Constants.categoryAPI, accessToken, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 populateCategoryList(response);
             }
         }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("amina2", "sec3: " + error.toString());
+            public void onErrorResponse(VolleyError response) {
+                Log.d("amina2", "sec3: " + response.toString());
             }
         });
 

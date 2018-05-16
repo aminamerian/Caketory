@@ -4,13 +4,11 @@ import android.animation.Animator;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.CompoundButton;
-import android.widget.Switch;
-import android.widget.Toast;
-import android.widget.ToggleButton;
+import android.util.Log;
 
 import com.airbnb.lottie.LottieAnimationView;
+
+import a2.thesis.com.caketory.Utils.PrefSingleton;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -34,8 +32,14 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                startActivity(new Intent(SplashActivity.this, AuthActivity.class));
-//                calling finish method to not get back to splash screen later by pressing back button
+                if (PrefSingleton.getInstance(SplashActivity.this).getUserHaveBeenAuthenticated()) {
+                    Log.d("amina2", "Step 1: User Have Been Authenticated.");
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                } else {
+                    Log.w("amina2", "Step 1: User Have Not Been Authenticated.");
+                    startActivity(new Intent(SplashActivity.this, AuthActivity.class));
+                }
+                //calling finish method to not get back to splash screen later by pressing back button
                 finish();
             }
 
@@ -49,6 +53,5 @@ public class SplashActivity extends AppCompatActivity {
 
             }
         });
-
     }
 }
