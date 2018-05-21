@@ -5,7 +5,14 @@
     <string name="w_bestSelling">محصولات پرفروش</string>
     <string name="w_categories">انواع محصولات</string>
     <string name="w_addToShoppingBasket">افزودن به سبد خرید</string>
-
+    <string name="w_shoppingBasket">سبد خرید</string>
+    <string name="w_ordering">مرتب سازی</string>
+    <string name="w_filtering">فیلترکردن</string>
+    <string name="w_productPrice">قیمت محصول</string>
+    <string name="w_totalPrice">قیمت کل</string>
+    <string name="w_quantity">مقدار سفارش</string>
+    <string name="w_totalDiscount">جمع تخفیف ها</string>
+    <string name="w_finalPrice">قیمت نهایی</string>
 
     <string name="drawer_open">open</string>
     <string name="drawer_close">close</string>
@@ -27,6 +34,7 @@
     <string name="verified">فروش با کیفیت تضمینی</string>
     <string name="store">دسترسی به نزدیک ترین قنادی به شما</string>
     <string name="shipping">آماده ارسال به محض سفارش</string>
+    <string name="finalizeOrder">نهایی کردن سفارش</string>
 
     <string name="text">
         To create a dynamic and multi-pane user interface on Android,
@@ -89,7 +97,4 @@
     <string name="activate">فعال سازی</string>
     <string name="enterPhoneNumber">شماره تلفن خود را وارد کنید</string>
     <string name="enterSentCode">کد دریافت شده را وارد کنید</string>
-    <string name="w_ordering">مرتب سازی</string>
-    <string name="w_filtering">فیلترکردن</string>
-
 </resources>

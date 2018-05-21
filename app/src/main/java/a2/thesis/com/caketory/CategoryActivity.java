@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -39,9 +40,6 @@ import a2.thesis.com.caketory.Utils.PrefSingleton;
 
 public class CategoryActivity extends AppCompatActivity implements CategoryProductsAdapter.CategoryProductsAdapterListener {
 
-    private Toolbar toolbar;
-    private Typeface yekanFont;
-
     private List<ItemProduct> catProductsList;
     private CategoryProductsAdapter catProductsAdapter;
 
@@ -54,9 +52,9 @@ public class CategoryActivity extends AppCompatActivity implements CategoryProdu
         setContentView(R.layout.activity_category);
 
         getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        yekanFont = Typeface.createFromAsset(getAssets(), "fonts/b_yekan.ttf");
+        Typeface yekanFont = Typeface.createFromAsset(getAssets(), "fonts/b_yekan.ttf");
 
-        toolbar = findViewById(R.id.cat_toolbar);
+        Toolbar toolbar = findViewById(R.id.cat_toolbar);
 
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -72,10 +70,10 @@ public class CategoryActivity extends AppCompatActivity implements CategoryProdu
         CollapsingToolbarLayout toolbarLayout = findViewById(R.id.cat_toolbar_layout);
         toolbarLayout.setTitleEnabled(false);
 
-        TextView orderingTextView = findViewById(R.id.textView_ordering);
-        TextView filteringTextView = findViewById(R.id.textView_filtering);
-        orderingTextView.setTypeface(yekanFont);
-        filteringTextView.setTypeface(yekanFont);
+        Button orderingButton = findViewById(R.id.button_ordering);
+        Button filteringButton = findViewById(R.id.button_filtering);
+        orderingButton.setTypeface(yekanFont);
+        filteringButton.setTypeface(yekanFont);
 
         catId = getIntent().getLongExtra("CAT_ID", 0);
 

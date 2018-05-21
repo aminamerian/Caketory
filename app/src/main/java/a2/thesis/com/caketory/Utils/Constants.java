@@ -7,7 +7,7 @@ package a2.thesis.com.caketory.Utils;
 public class Constants {
 
     private static String Localhost = "http://192.168.1.101:85";
-    private static String RaspberiPi = "http://192.168.1.85";
+    private static String RaspberryPi = "http://192.168.1.85";
     private static String ServerAddress = Localhost;
 
     private static String rootAddress = ServerAddress + "/Caketory/admin";
@@ -17,6 +17,10 @@ public class Constants {
     public static final String productAPI = rootAddress + "/api/get-all-products.php";
     public static final String categoryAPI = rootAddress + "/api/get-all-categories.php";
     public static final String catProductAPI = rootAddress + "/api/get-a-category-products.php";
+
+    public static final String addOrderAPI = rootAddress + "/api/order-add.php";
+    public static final String cancelOrderAPI = rootAddress + "/api/order-cancel.php";
+    public static final String getOrderAPI = rootAddress + "/api/order-get.php";
 
     public static final String SEND_SMS = rootAddress + "/api/authentication/send_sms.php";
     public static final String VERIFY_OTP = rootAddress + "/api/authentication/verify_otp.php";

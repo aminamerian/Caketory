@@ -58,7 +58,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private List<ItemCategory> categoryList;
 
     private DrawerLayout drawerLayout;
-    //private TextView badgeText;
+    private TextView badgeText;
+    private Typeface yekanFont;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        Typeface yekanFont = Typeface.createFromAsset(getAssets(), "fonts/b_yekan.ttf");
+        yekanFont = Typeface.createFromAsset(getAssets(), "fonts/b_yekan.ttf");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -74,10 +75,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(false);  //hide actionBar title
         }
-        TextView toolbarTitleText = findViewById(R.id.text_toolbarTitle);
         TextView bestSellingText = findViewById(R.id.text_bestSelling);
         TextView categoriesText = findViewById(R.id.text_categories);
-        toolbarTitleText.setTypeface(yekanFont);
         bestSellingText.setTypeface(yekanFont);
         categoriesText.setTypeface(yekanFont);
 
@@ -123,20 +122,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        //TODO uncomment below if you want to have badge for shopping cart icon
-        // MenuItem badge = menu.findItem(R.id.item_badge);
+        MenuItem badge = menu.findItem(R.id.item_badge);
+        badgeText = badge.getActionView().findViewById(R.id.menu_badge);
+        badgeText.setText("2");
+        badgeText.setTypeface(yekanFont);
 
-//        badgeText = badge.getActionView().findViewById(R.id.menu_badge);
-//        badgeText.setTypeface(yekanFont);
-//
-//        badge.getActionView().setOnClickListener(new View.OnClickListener() {
-//            int c = 0;
-//
-//            @Override
-//            public void onClick(View v) {
-//                badgeText.setText(String.valueOf(++c));
-//            }
-//        });
+        badge.getActionView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, OrderActivity.class));
+            }
+        });
         return true;
     }
 

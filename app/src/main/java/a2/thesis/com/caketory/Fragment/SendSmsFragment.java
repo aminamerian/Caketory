@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -35,7 +36,6 @@ public class SendSmsFragment extends Fragment {
     ViewPager mPager;
     EditText input;
     private Interface1 anInterface;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,23 +92,12 @@ public class SendSmsFragment extends Fragment {
             @Override
             public void onResponse(String response) {
                 JSONObject responseObj;
-                Log.d("amina2", "response: " + response);
-
                 try {
                     responseObj = new JSONObject(response);
-
-                    // Parsing json object response
                     int error = responseObj.getInt("error");
-
-                    // Checking for errors, if not error SMS is initiated
-                    // Device should receive it shortly
                     if (error == 0) {
                         anInterface.setPhoneNumber(phoneNumber);
                         mPager.setCurrentItem(1);
-                    } else if (error == 4) {
-                        //entered phone number is already active
-                        final String message = responseObj.getString("message");
-                        input.setError(message);
                     } else {
                         final String message = responseObj.getString("message");
                         input.setError(message);
@@ -128,10 +117,15 @@ public class SendSmsFragment extends Fragment {
             protected Map<String, String> getParams() {
                 return new HashMap<String, String>() {{
                     put("phone_number", phoneNumber);
+                    Log.d("amina2", "phone_number value: " + phoneNumber);
                 }};
             }
         };
 
+        //To avoid volley sending data twice bug, there is need to set retry policy fo the request
+        strReq.setRetryPolicy(new DefaultRetryPolicy(0,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         VolleySingleton.getInstance(getActivity()).addToRequestQueue(strReq);
     }
 

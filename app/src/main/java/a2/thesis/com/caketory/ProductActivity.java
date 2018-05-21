@@ -1,8 +1,10 @@
 package a2.thesis.com.caketory;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomSheetBehavior;
@@ -16,10 +18,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -56,6 +63,7 @@ public class ProductActivity extends AppCompatActivity {
     private BottomSheetBehavior sheetBehavior;
 
     private Long productId = null;
+    private int orderWeight = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,17 +101,16 @@ public class ProductActivity extends AppCompatActivity {
         productId = getIntent().getLongExtra("PRODUCT_ID", 0);
         fetchData(productId);
 
-        TextView addToBasketText = findViewById(R.id.text_addToBasket);
+        Button addToBasketButton = findViewById(R.id.button_addToBasket);
         TextView verifiedText = findViewById(R.id.textView_verified);
         TextView storeText = findViewById(R.id.textView_store);
         TextView ShippingText = findViewById(R.id.textView_shipping);
 
-        addToBasketText.setTypeface(yekanFont);
+        addToBasketButton.setTypeface(yekanFont);
         verifiedText.setTypeface(yekanFont);
         storeText.setTypeface(yekanFont);
         ShippingText.setTypeface(yekanFont);
 
-        CardView addToBasketCart = findViewById(R.id.cart_addToBasket);
 
         LinearLayout layoutBottomSheet = findViewById(R.id.bottom_sheet);
         sheetBehavior = BottomSheetBehavior.from(layoutBottomSheet);
@@ -111,18 +118,17 @@ public class ProductActivity extends AppCompatActivity {
         sheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-
             }
 
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-
             }
         });
 
-        addToBasketCart.setOnClickListener(new View.OnClickListener() {
+        addToBasketButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if (sheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
                     sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 } else {
@@ -218,6 +224,8 @@ public class ProductActivity extends AppCompatActivity {
         productDesDetail.setText(product.getProductDesDetail());
         productPrice.setText(product.getProductPrice() + " تومان");
 
+        populateBottomSheet(product);
+
         String image2Path = product.getProductImage2();
         if (image2Path != null && !image2Path.equals("")) {
             imageLoader.get(Constants.imagesDirectory + image2Path, new ImageLoader.ImageListener() {
@@ -253,6 +261,120 @@ public class ProductActivity extends AppCompatActivity {
             loadContent();
         }
     }
+
+    private void populateBottomSheet(final ItemProduct product) {
+
+        final Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        final Animation anim_error = AnimationUtils.loadAnimation(ProductActivity.this, R.anim.error_anim);
+
+        TextView title = findViewById(R.id.textView_bottomSheet_title);
+        TextView subtitle = findViewById(R.id.textView_bottomSheet_subtitle);
+        final TextView price = findViewById(R.id.textView_bottomSheet_price);
+        final TextView weight = findViewById(R.id.textView_bottomSheet_weight);
+        TextView deliveryAddress = findViewById(R.id.textView_bottomSheet_deliveryAddress);
+        TextView address = findViewById(R.id.textView_bottomSheet_address);
+        Button finalizeOrder = findViewById(R.id.button_finalizeOrder);
+
+        final ImageButton increment = findViewById(R.id.imageButton_increment);
+        final ImageButton decrement = findViewById(R.id.imageButton_decrement);
+
+        title.setTypeface(yekanFont);
+        subtitle.setTypeface(yekanFont);
+        price.setTypeface(yekanFont);
+        weight.setTypeface(yekanFont);
+        deliveryAddress.setTypeface(yekanFont);
+//        address.setTypeface(yekanFont);
+        finalizeOrder.setTypeface(yekanFont);
+
+        title.setText(product.getProductName());
+        subtitle.setText(product.getProductDescription());
+        price.setText(product.getProductPrice() + " تومان");
+        weight.setText(orderWeight + " کیلوگرم");
+
+        increment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (orderWeight < 10) {
+                    orderWeight++;
+                    price.setText(product.getProductPrice() * orderWeight + " تومان");
+                    weight.setText(orderWeight + " کیلوگرم");
+                    vibrator.vibrate(50);
+                } else {
+                    increment.startAnimation(anim_error);
+                    Toast.makeText(ProductActivity.this, "بیشتر از ده کیلوگرم ممکن نیست!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        decrement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (orderWeight > 1) {
+                    orderWeight--;
+                    price.setText(product.getProductPrice() * orderWeight + " تومان");
+                    weight.setText(orderWeight + " کیلوگرم");
+                    vibrator.vibrate(100);
+                } else {
+                    decrement.startAnimation(anim_error);
+                    Toast.makeText(ProductActivity.this, "کمتر از یک کیلوگرم ممکن نیست!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        finalizeOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                registerOrder(productId, orderWeight);
+            }
+        });
+
+    }
+
+    private void registerOrder(Long productId, int orderWeight) {
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", PrefSingleton.getInstance(this).getAccessToken());
+        params.put("product_id", String.valueOf(productId));
+        params.put("quantity", String.valueOf(orderWeight));
+
+        CustomRequest requestProduct = new CustomRequest(Request.Method.POST, Constants.addOrderAPI, params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    if (response.getBoolean("enough")) {
+                        if (response.getBoolean("successful")) {
+                            Toast.makeText(ProductActivity.this,
+                                    "سفارش شما با موقثیت ثبت شد.", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(ProductActivity.this, OrderActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Toast.makeText(ProductActivity.this, "خطا در ثبت سفارش!", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Snackbar snackbar = Snackbar
+                                .make(findViewById(R.id.coordinatorLayout), "موجودی انبار ناکافیست!", Snackbar.LENGTH_LONG);
+                        View view = snackbar.getView();
+                        TextView snackbarTextView = view.findViewById(android.support.design.R.id.snackbar_text);
+                        snackbarTextView.setTextColor(Color.WHITE);
+                        snackbarTextView.setTypeface(yekanFont);
+                        snackbarTextView.setTextSize(getResources().getDimension(R.dimen.snackbar_text));
+                        snackbar.show();
+                    }
+                } catch (JSONException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError response) {
+                Log.d("amina2", "register order request: " + response.toString());
+                tryAgain();
+            }
+        });
+
+        VolleySingleton.getInstance(this).addToRequestQueue(requestProduct);
+    }
+
 
     public void tryAgain() {
         progressBar.setVisibility(View.GONE);

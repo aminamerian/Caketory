@@ -2,12 +2,14 @@
 <resources>
     <color name="colorPrimary">#F1383E</color>
     <color name="colorPrimaryDark">#C52A2E</color>
+    <color name="colorPrimaryLight">#F58C4F</color>
     <color name="colorAccent">#FF1744</color>
 
     <color name="colorTitle">#6a6a6a</color>
     <color name="colorTitleLight">#9c9c9c</color>
     <color name="colorPrice">#66BA6C</color>
     <color name="colorPriceDark">#558B2F</color>
+
     <color name="colorDivider">#22000000</color>
     <color name="colorDivider2">#15000000</color>
 
@@ -17,8 +19,8 @@
 
     <color name="toolbar_title">#ffffff</color>
 
-    <color name="black_text">#263238</color>
-    <color name="dark_gray_text">#455A64</color>
+    <color name="black_text">#353535</color>
+    <color name="dark_gray_text">#555</color>
     <color name="gray_text">#77787B</color>
 
 
@@ -30,6 +32,18 @@
 
     <color name="btn_addToBasket">#F1F8E9</color>
 
+    <color name="super_light_background">#EFEFEF</color>
     <color name="light_background">#EFEFEF</color>
     <color name="dark_background">#DEDEDE</color>
+
+    <color name="primaryButtonFocused">#99F1383E</color>
+    <color name="primaryButtonPressed">#eeF1383E</color>
+
+    <color name="greenButton">@color/colorPrice</color>
+    <color name="greenButtonRipple">@color/colorPriceDark</color>
+    <color name="blackButton">#000</color>
+    <color name="blackButtonRipple">#555</color>
+    <color name="whiteButtonRipple">#c4c4c4</color>
+    <color name="whiteButton">#fff</color>
+
 </resources>

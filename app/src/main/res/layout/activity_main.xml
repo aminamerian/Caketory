@@ -19,12 +19,11 @@
             app:layout_scrollFlags="snap|enterAlways"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-            <TextView
-                android:id="@+id/text_toolbarTitle"
-                style="@style/toolbar_title"
-                android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/imageView_toolbarTitle"
+                android:layout_width="90dp"
                 android:layout_height="wrap_content"
-                android:text="@string/app_name_fa" />
+                android:src="@drawable/app_title" />
 
         </android.support.v7.widget.Toolbar>
 

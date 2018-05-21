@@ -134,7 +134,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
                         android:drawablePadding="12dp"
-                        android:drawableStart="@drawable/ic_kg"
+                        android:drawableStart="@drawable/ic_euro"
                         android:gravity="center"
                         android:textColor="@color/colorPriceDark"
                         android:textSize="18sp" />
@@ -171,7 +171,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
                         android:drawablePadding="12dp"
-                        android:drawableStart="@drawable/ic_shipping"
+                        android:drawableStart="@drawable/ic_motorcycle"
                         android:text="@string/shipping"
                         android:textColor="@color/gray_text" />
 
@@ -196,26 +196,14 @@
                         android:background="?attr/selectableItemBackgroundBorderless"
                         app:srcCompat="@drawable/ic_arrow" />
 
-                    <android.support.v7.widget.CardView
-                        android:id="@+id/cart_addToBasket"
+                    <Button
+                        android:id="@+id/button_addToBasket"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:foreground="?android:attr/selectableItemBackground"
-                        app:cardBackgroundColor="@color/colorPrice"
-                        app:cardCornerRadius="2dp">
-
-                        <TextView
-                            android:id="@+id/text_addToBasket"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="@string/w_addToShoppingBasket"
-                            android:textColor="@android:color/white"
-                            android:textSize="18sp" />
-
-                    </android.support.v7.widget.CardView>
+                        android:background="@drawable/bg_ripple_button_green"
+                        android:text="@string/w_addToShoppingBasket"
+                        android:textColor="@android:color/white"
+                        android:textSize="18sp" />
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>

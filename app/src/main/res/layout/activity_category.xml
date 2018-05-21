@@ -33,39 +33,37 @@
                     android:layout_marginTop="56dp"
                     android:background="#FFF">
 
-                    <TextView
-                        android:id="@+id/textView_ordering"
+                    <Button
+                        android:id="@+id/button_ordering"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="48dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@+id/view"
+                        android:background="@drawable/bg_ripple_button_white"
                         android:drawableEnd="@drawable/ic_sort"
-                        android:drawablePadding="4dp"
-                        android:gravity="center"
+                        android:paddingEnd="40dp"
+                        android:paddingStart="40dp"
                         android:text="@string/w_ordering"
                         android:textColor="#757575"
                         android:textSize="15sp" />
 
                     <View
+                        android:id="@+id/view"
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
                         android:layout_centerInParent="true"
                         android:background="@color/colorDivider" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_alignParentBottom="true"
-                        android:background="#33000000" />
-
-                    <TextView
-                        android:id="@+id/textView_filtering"
+                    <Button
+                        android:id="@+id/button_filtering"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="48dp"
+                        android:layout_toEndOf="@+id/view"
+                        android:background="@drawable/bg_ripple_button_white"
                         android:drawableEnd="@drawable/ic_filter"
-                        android:drawablePadding="4dp"
-                        android:gravity="center"
+                        android:paddingEnd="40dp"
+                        android:paddingStart="40dp"
                         android:text="@string/w_filtering"
                         android:textColor="#757575"
                         android:textSize="15sp" />

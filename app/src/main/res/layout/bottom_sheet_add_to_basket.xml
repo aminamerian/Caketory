@@ -15,43 +15,96 @@
         android:layout_height="16dp"
         android:background="@drawable/bg_custom_elevation" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#fff"
-        android:orientation="vertical"
         android:padding="16dp">
 
         <TextView
+            android:id="@+id/textView_bottomSheet_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chicken Fried Rice 1x1" />
+            android:layout_alignParentTop="true"
+            android:textColor="@color/dark_gray_text"
+            android:textSize="18sp" />
 
         <TextView
+            android:id="@+id/textView_bottomSheet_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Paneer Tikka 1x2" />
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:textColor="@color/dark_gray_text"
+            android:textSize="18sp" />
 
         <TextView
+            android:id="@+id/textView_bottomSheet_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/textView_bottomSheet_title"
+            android:textColor="@color/gray_text" />
+
+        <LinearLayout
+            android:id="@+id/layout_inc_dec"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textView_bottomSheet_subtitle"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/imageButton_increment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:srcCompat="@drawable/ic_arrow_right" />
+
+            <TextView
+                android:id="@+id/textView_bottomSheet_weight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:textColor="@color/gray_text"
+                android:textSize="18sp" />
+
+            <ImageButton
+                android:id="@+id/imageButton_decrement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:srcCompat="@drawable/ic_arrow_left" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView_bottomSheet_deliveryAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/layout_inc_dec"
             android:layout_marginTop="16dp"
-            android:text="Delivery Address"
-            android:textColor="#444"
-            android:textStyle="bold" />
+            android:text="آدرس تحویل"
+            android:textColor="#444" />
 
         <TextView
+            android:id="@+id/textView_bottomSheet_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/textView_bottomSheet_deliveryAddress"
             android:text="Flat No 404, Skyline Apartments, Vizag - 500576" />
 
         <Button
+            android:id="@+id/button_finalizeOrder"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:layout_below="@id/textView_bottomSheet_address"
             android:layout_marginTop="30dp"
-            android:background="#000"
-            android:foreground="?attr/selectableItemBackground"
-            android:text="PROCEED PAYMENT"
-            android:textColor="#fff" />
-    </LinearLayout>
+            android:background="@drawable/bg_ripple_button_black"
+            android:text="@string/finalizeOrder"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+
 </LinearLayout>

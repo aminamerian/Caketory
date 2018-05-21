@@ -93,6 +93,7 @@ public class VerifyOtpFragment extends Fragment {
                 return new HashMap<String, String>() {{
                     put("phone_number", anInterface.getPhoneNumber());
                     put("otp", code);
+                    Log.d("amina2", "check the code: " + code + " with phone number: " + anInterface.getPhoneNumber());
                 }};
             }
         };
