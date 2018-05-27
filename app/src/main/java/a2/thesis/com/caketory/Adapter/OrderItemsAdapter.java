@@ -2,7 +2,6 @@ package a2.thesis.com.caketory.Adapter;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
@@ -19,16 +18,16 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import a2.thesis.com.caketory.Entity.ItemOrder;
-import a2.thesis.com.caketory.Entity.ItemProduct;
 import a2.thesis.com.caketory.Network.VolleySingleton;
 import a2.thesis.com.caketory.R;
 import a2.thesis.com.caketory.Utils.Constants;
+import a2.thesis.com.caketory.Utils.OrderItemsInterface;
 
 /**
  * Created by Amin on 21/05/2018.
  */
 
-public class OrderItemsAdapter extends RecyclerView.Adapter<OrderItemsAdapter.MyViewHolder> {
+public class OrderItemsAdapter extends RecyclerView.Adapter<OrderItemsAdapter.MyViewHolder> implements OrderItemsInterface {
 
     private Context context;
     private List<ItemOrder> orderItemsList;
@@ -75,7 +74,6 @@ public class OrderItemsAdapter extends RecyclerView.Adapter<OrderItemsAdapter.My
         holder.finalPriceW.setTypeface(yekanFont);
         holder.slideToDelete.setTypeface(yekanFont);
 
-
         String image = itemOrder.getProductImage();
         if (image != null) {
             imageLoader.get(Constants.imagesDirectory + image, new ImageLoader.ImageListener() {
@@ -97,8 +95,21 @@ public class OrderItemsAdapter extends RecyclerView.Adapter<OrderItemsAdapter.My
         return orderItemsList.size();
     }
 
+    @Override
+    public boolean onItemDismiss(int position) {
+        orderItemsList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, orderItemsList.size());
+        return orderItemsList.isEmpty();
+    }
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public long getOrderItemId(int position) {
+        return orderItemsList.get(position).getItemId();
+    }
+
+
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         private ImageView image;
         private TextView name, price, priceW, quantity, quantityW, des, totalPrice, totalPriceW,
                 totalDiscount, totalDiscountW, finalPrice, finalPriceW, slideToDelete;

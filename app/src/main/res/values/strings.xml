@@ -97,4 +97,5 @@
     <string name="activate">فعال سازی</string>
     <string name="enterPhoneNumber">شماره تلفن خود را وارد کنید</string>
     <string name="enterSentCode">کد دریافت شده را وارد کنید</string>
+    <string name="empty_basket">سبد خرید شما خالیست!</string>
 </resources>

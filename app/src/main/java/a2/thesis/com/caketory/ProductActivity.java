@@ -208,6 +208,13 @@ public class ProductActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * The function throws IllegalArgumentException if ProductActivity
+     * be destroyed before the load function of Glide object be called.
+     *
+     * @param product
+     * @throws IllegalArgumentException
+     */
     private void populateViews(ItemProduct product) {
 
         TextView productName = findViewById(R.id.textView_name);
@@ -227,30 +234,33 @@ public class ProductActivity extends AppCompatActivity {
         populateBottomSheet(product);
 
         String image2Path = product.getProductImage2();
+
         if (image2Path != null && !image2Path.equals("")) {
             imageLoader.get(Constants.imagesDirectory + image2Path, new ImageLoader.ImageListener() {
                 @Override
                 public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                    Glide.with(ProductActivity.this)
-                            .load(response.getRequestUrl())
-                            .listener(new RequestListener<String, GlideDrawable>() {
-                                @Override
-                                public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                                    Log.d("amina2", "Glide: error");
-                                    tryAgain();
-                                    return false;
-                                }
+                    try {
+                        Glide.with(ProductActivity.this)
+                                .load(response.getRequestUrl())
+                                .listener(new RequestListener<String, GlideDrawable>() {
+                                    @Override
+                                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                        Log.d("amina2", "Glide: error");
+                                        tryAgain();
+                                        return false;
+                                    }
 
-                                @Override
-                                public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                                    Log.d("amina2", "Glide: successful -is from memory cache: " + isFromMemoryCache);
-                                    loadContent();
-                                    return false;
-                                }
-                            })
-                            .into((ImageView) findViewById(R.id.imageView_header));
+                                    @Override
+                                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                        Log.d("amina2", "Glide: successful -is from memory cache: " + isFromMemoryCache);
+                                        loadContent();
+                                        return false;
+                                    }
+                                })
+                                .into((ImageView) findViewById(R.id.imageView_header));
+                    } catch (IllegalArgumentException e) {
+                    }
                 }
-
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Log.d("amina2", error.toString());

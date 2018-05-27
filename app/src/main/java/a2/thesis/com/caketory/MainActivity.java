@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -124,7 +125,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         MenuItem badge = menu.findItem(R.id.item_badge);
         badgeText = badge.getActionView().findViewById(R.id.menu_badge);
-        badgeText.setText("2");
         badgeText.setTypeface(yekanFont);
 
         badge.getActionView().setOnClickListener(new View.OnClickListener() {
@@ -150,6 +150,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setOrdersNumberBadge();
+    }
+
     private void fetchData() {
 
         CustomRequest requestHeaderImage, requestProduct, requestCat;
@@ -165,10 +171,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError response) {
-                Log.d("amina2", "sec1: " + response.toString());
+                Log.d("amina2", "sec2: " + response.toString());
             }
         });
-
         requestProduct = new CustomRequest(Request.Method.POST, Constants.productAPI, accessToken, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -177,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError response) {
-                Log.d("amina2", "sec2: " + response.toString());
+                Log.d("amina2", "sec3: " + response.toString());
             }
         });
 
@@ -189,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError response) {
-                Log.d("amina2", "sec3: " + response.toString());
+                Log.d("amina2", "sec4: " + response.toString());
             }
         });
 
@@ -249,6 +254,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } finally {
             categoryAdapter.notifyDataSetChanged();
         }
+    }
+
+    private void setOrdersNumberBadge() {
+        CustomRequest requestUserData;
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", PrefSingleton.getInstance(this).getAccessToken());
+        params.put("orders_number", "only");
+
+        requestUserData = new CustomRequest(Request.Method.POST, Constants.userDataAPI, params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                int ordersNum = 0;
+                try {
+                    ordersNum = response.getInt("order_items_num");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (ordersNum == 0) {
+                    badgeText.setVisibility(View.INVISIBLE);
+                } else {
+                    badgeText.setVisibility(View.VISIBLE);
+                    badgeText.setText(String.valueOf(ordersNum));
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError response) {
+                Log.d("amina2", "orders number request: " + response.toString());
+            }
+        });
+        VolleySingleton.getInstance(this).addToRequestQueue(requestUserData);
     }
 
     @Override
