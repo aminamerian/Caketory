@@ -1,7 +1,7 @@
 package a2.thesis.com.caketory;
 
 import android.content.DialogInterface;
-import android.graphics.Canvas;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -13,8 +13,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,16 +29,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import a2.thesis.com.caketory.Adapter.CategoryProductsAdapter;
 import a2.thesis.com.caketory.Adapter.OrderItemsAdapter;
 import a2.thesis.com.caketory.Entity.ItemOrder;
-import a2.thesis.com.caketory.Entity.ItemProduct;
 import a2.thesis.com.caketory.Network.VolleySingleton;
 import a2.thesis.com.caketory.Utils.Constants;
 import a2.thesis.com.caketory.Utils.CustomRequest;
@@ -46,8 +44,12 @@ public class OrderActivity extends AppCompatActivity {
 
     private ArrayList<ItemOrder> orderItemsList;
     private OrderItemsAdapter orderItemsAdapter;
+    private Typeface yekanFont;
     private TextView emptyBasket;
     private ImageView emptyBasketIcon;
+    private Button finalizeOrder;
+    private View shadowNextStep;
+    private TextView badgeText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +57,7 @@ public class OrderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_order);
 
         getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        Typeface yekanFont = Typeface.createFromAsset(getAssets(), "fonts/b_yekan.ttf");
+        yekanFont = Typeface.createFromAsset(getAssets(), "fonts/b_yekan.ttf");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -66,11 +68,21 @@ public class OrderActivity extends AppCompatActivity {
         }
 
         TextView toolbarTitle = findViewById(R.id.textView_toolbarTitle);
+        finalizeOrder = findViewById(R.id.button_finalizeOrder);
+        shadowNextStep = findViewById(R.id.shadow_finalizeOrder);
         toolbarTitle.setTypeface(yekanFont);
+        finalizeOrder.setTypeface(yekanFont);
 
         emptyBasket = findViewById(R.id.textView_emptyBasket);
         emptyBasketIcon = findViewById(R.id.imageView_ic_emptyBasket);
         emptyBasket.setTypeface(yekanFont);
+
+        finalizeOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(OrderActivity.this, FinalizeOrderActivity.class));
+            }
+        });
 
         RecyclerView orderItemsRecycler = findViewById(R.id.recyclerView_orderItems);
         orderItemsList = new ArrayList<>();
@@ -96,6 +108,8 @@ public class OrderActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         cancelOrder(orderItemsAdapter.getOrderItemId(position));
+                        Constants.setOrderItemNumber(Constants.getOrderItemNumber() - 1);
+                        setOrderItemNumberBadge();
                         if (orderItemsAdapter.onItemDismiss(position)) {
                             finish();
                         }
@@ -113,6 +127,16 @@ public class OrderActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_order, menu);
+        MenuItem badge = menu.findItem(R.id.item_badge);
+        badgeText = badge.getActionView().findViewById(R.id.menu_badge);
+        badgeText.setTypeface(yekanFont);
+        setOrderItemNumberBadge();
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
@@ -121,6 +145,17 @@ public class OrderActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setOrderItemNumberBadge() {
+        if (badgeText != null) {
+            if (Constants.getOrderItemNumber() == 0) {
+                badgeText.setVisibility(View.INVISIBLE);
+            } else {
+                badgeText.setVisibility(View.VISIBLE);
+                badgeText.setText(String.valueOf(Constants.getOrderItemNumber()));
+            }
+        }
     }
 
     private void fetchData() {
@@ -162,6 +197,8 @@ public class OrderActivity extends AppCompatActivity {
                     //shopping basket is empty (the user do not have any unprocessed order)
                     emptyBasket.setVisibility(View.VISIBLE);
                     emptyBasketIcon.setVisibility(View.VISIBLE);
+                    finalizeOrder.setVisibility(View.GONE);
+                    shadowNextStep.setVisibility(View.GONE);
                 } else {
                     Toast.makeText(this, response.getString("msg"), Toast.LENGTH_SHORT).show();
                 }

@@ -26,7 +26,17 @@ public class Constants {
     public static final String SEND_SMS = rootAddress + "/api/authentication/send_sms.php";
     public static final String VERIFY_OTP = rootAddress + "/api/authentication/verify_otp.php";
 
+    private static int orderItemNumber = 0;
+
     // SMS provider identification
     // It should match with your SMS gateway origin
     public static final String SMS_ORIGIN = "50002015242298";
+
+    public static int getOrderItemNumber() {
+        return orderItemNumber;
+    }
+
+    public static void setOrderItemNumber(int orderItemNumber) {
+        Constants.orderItemNumber = orderItemNumber;
+    }
 }

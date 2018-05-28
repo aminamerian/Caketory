@@ -3,6 +3,7 @@ package a2.thesis.com.caketory;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
+import android.support.design.internal.NavigationMenuView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -16,18 +17,19 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,6 +48,7 @@ import a2.thesis.com.caketory.Entity.ItemProduct;
 import a2.thesis.com.caketory.Network.VolleySingleton;
 import a2.thesis.com.caketory.Utils.Constants;
 import a2.thesis.com.caketory.Utils.CustomRequest;
+import a2.thesis.com.caketory.Utils.CustomTypefaceSpan;
 import a2.thesis.com.caketory.Utils.PrefSingleton;
 import me.relex.circleindicator.CircleIndicator;
 
@@ -86,10 +89,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
         drawerLayout.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
+
         //initialize standard navigation drawer
         NavigationView navigationView = findViewById(R.id.nav_view);
         //set drawer's item click listener
         navigationView.setNavigationItemSelectedListener(this);
+        setTypefaceToNavigationView(navigationView);
+        //hiding navigation view scroll bar
+        NavigationMenuView navigationMenuView = (NavigationMenuView) navigationView.getChildAt(0);
+        navigationMenuView.setVerticalScrollBarEnabled(false);
 
         RecyclerView productRecycler = findViewById(R.id.recycler_product);
         productsList = new ArrayList<>();
@@ -153,12 +161,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onResume() {
         super.onResume();
-        setOrdersNumberBadge();
+        setOrderItemNumberBadge();
     }
 
     private void fetchData() {
 
-        CustomRequest requestHeaderImage, requestProduct, requestCat;
+        CustomRequest requestUserData, requestHeaderImage, requestProduct, requestCat;
+
+        Map<String, String> params = new HashMap<>();
+        params.put("access_token", PrefSingleton.getInstance(this).getAccessToken());
+        params.put("orders_number", "only");
+
+        requestUserData = new CustomRequest(Request.Method.POST, Constants.userDataAPI, params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                populateUserData(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError response) {
+                Log.d("amina2", "orders number request: " + response.toString());
+            }
+        });
 
         Map<String, String> accessToken = new HashMap<>();
         accessToken.put("access_token", PrefSingleton.getInstance(this).getAccessToken());
@@ -198,10 +222,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        VolleySingleton.getInstance(this).addToRequestQueue(requestUserData);
         VolleySingleton.getInstance(this).addToRequestQueue(requestHeaderImage);
         VolleySingleton.getInstance(this).addToRequestQueue(requestProduct);
         VolleySingleton.getInstance(this).addToRequestQueue(requestCat);
     }
+
+    private void populateUserData(JSONObject response) {
+        int orderItemNum = 0;
+        try {
+            orderItemNum = response.getInt("order_items_num");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Constants.setOrderItemNumber(orderItemNum);
+        setOrderItemNumberBadge();
+    }
+
 
     private void populateHeaderImageList(JSONObject response) {
         ArrayList<String> images = new ArrayList<>();
@@ -256,35 +293,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void setOrdersNumberBadge() {
-        CustomRequest requestUserData;
-        Map<String, String> params = new HashMap<>();
-        params.put("access_token", PrefSingleton.getInstance(this).getAccessToken());
-        params.put("orders_number", "only");
-
-        requestUserData = new CustomRequest(Request.Method.POST, Constants.userDataAPI, params, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                int ordersNum = 0;
-                try {
-                    ordersNum = response.getInt("order_items_num");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                if (ordersNum == 0) {
-                    badgeText.setVisibility(View.INVISIBLE);
-                } else {
-                    badgeText.setVisibility(View.VISIBLE);
-                    badgeText.setText(String.valueOf(ordersNum));
-                }
+    private void setOrderItemNumberBadge() {
+        if (badgeText != null) {
+            if (Constants.getOrderItemNumber() == 0) {
+                badgeText.setVisibility(View.INVISIBLE);
+            } else {
+                badgeText.setVisibility(View.VISIBLE);
+                badgeText.setText(String.valueOf(Constants.getOrderItemNumber()));
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError response) {
-                Log.d("amina2", "orders number request: " + response.toString());
-            }
-        });
-        VolleySingleton.getInstance(this).addToRequestQueue(requestUserData);
+        }
     }
 
     @Override
@@ -300,14 +317,55 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-
         //navigation drawer's items click listener
-//        if (id == R.id.nav_fav) {
-//        }
+        if (id == R.id.nav_profile) {
+            startActivity(new Intent(this, ProfileActivity.class));
+        } else if (id == R.id.nav_shb) {
+            startActivity(new Intent(this, OrderActivity.class));
+        } else if (id == R.id.nav_fav) {
+            Toast.makeText(this, "Favorite Items", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_history) {
+            Toast.makeText(this, "Orders History", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_message) {
+            Toast.makeText(this, "Messages", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_cake) {
+            goToCategoryActivity(1, "کیک");
+        } else if (id == R.id.nav_dry) {
+            goToCategoryActivity(2, "شیرینی خشک");
+        } else if (id == R.id.nav_wet) {
+            goToCategoryActivity(3, "شیرینی تر");
+        } else if (id == R.id.nav_des) {
+            goToCategoryActivity(4, "دسر");
+        }
         //close drawer after any selection
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    private void setTypefaceToMenuItem(MenuItem mi) {
+        SpannableString mNewTitle = new SpannableString(mi.getTitle());
+        mNewTitle.setSpan(new CustomTypefaceSpan("", yekanFont), 0, mNewTitle.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        mi.setTitle(mNewTitle);
+    }
+
+    private void setTypefaceToNavigationView(NavigationView navigationView) {
+        Menu m = navigationView.getMenu();
+        for (int i = 0; i < m.size(); i++) {
+            MenuItem mi = m.getItem(i);
+
+            //for applying a font to subMenu ...
+            SubMenu subMenu = mi.getSubMenu();
+            if (subMenu != null && subMenu.size() > 0) {
+                for (int j = 0; j < subMenu.size(); j++) {
+                    MenuItem subMenuItem = subMenu.getItem(j);
+                    setTypefaceToMenuItem(subMenuItem);
+                }
+            }
+            //the method we have create in activity
+            setTypefaceToMenuItem(mi);
+        }
+    }
+
 
     @Override
     public void onItemClicked(long id) {
@@ -318,6 +376,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onCategoryItemClicked(long id, String name) {
+        goToCategoryActivity(id, name);
+    }
+
+    private void goToCategoryActivity(long id, String name) {
         Intent intent = new Intent(this, CategoryActivity.class);
         intent.putExtra("CAT_ID", id);
         intent.putExtra("CAT_NAME", name);

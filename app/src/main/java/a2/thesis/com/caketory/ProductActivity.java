@@ -168,6 +168,11 @@ public class ProductActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     private void fetchData(long productId) {
 
         Map<String, String> params = new HashMap<>();
@@ -261,6 +266,7 @@ public class ProductActivity extends AppCompatActivity {
                     } catch (IllegalArgumentException e) {
                     }
                 }
+
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Log.d("amina2", error.toString());
@@ -283,7 +289,7 @@ public class ProductActivity extends AppCompatActivity {
         final TextView weight = findViewById(R.id.textView_bottomSheet_weight);
         TextView deliveryAddress = findViewById(R.id.textView_bottomSheet_deliveryAddress);
         TextView address = findViewById(R.id.textView_bottomSheet_address);
-        Button finalizeOrder = findViewById(R.id.button_finalizeOrder);
+        Button nextStep = findViewById(R.id.button_nextStep);
 
         final ImageButton increment = findViewById(R.id.imageButton_increment);
         final ImageButton decrement = findViewById(R.id.imageButton_decrement);
@@ -294,7 +300,7 @@ public class ProductActivity extends AppCompatActivity {
         weight.setTypeface(yekanFont);
         deliveryAddress.setTypeface(yekanFont);
 //        address.setTypeface(yekanFont);
-        finalizeOrder.setTypeface(yekanFont);
+        nextStep.setTypeface(yekanFont);
 
         title.setText(product.getProductName());
         subtitle.setText(product.getProductDescription());
@@ -331,10 +337,11 @@ public class ProductActivity extends AppCompatActivity {
             }
         });
 
-        finalizeOrder.setOnClickListener(new View.OnClickListener() {
+        nextStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 registerOrder(productId, orderWeight);
+                Constants.setOrderItemNumber(Constants.getOrderItemNumber() + 1);
             }
         });
 
@@ -353,7 +360,7 @@ public class ProductActivity extends AppCompatActivity {
                     if (response.getBoolean("enough")) {
                         if (response.getBoolean("successful")) {
                             Toast.makeText(ProductActivity.this,
-                                    "سفارش شما با موقثیت ثبت شد.", Toast.LENGTH_SHORT).show();
+                                    "سفارش شما با موفقیت ثبت شد.", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(ProductActivity.this, OrderActivity.class);
                             startActivity(intent);
                             finish();

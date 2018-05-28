@@ -37,7 +37,9 @@
             android:theme="@style/AppTheme.Product" />
         <activity android:name=".AuthActivity" />
         <activity android:name=".CategoryActivity" />
-        <activity android:name=".OrderActivity"></activity>
+        <activity android:name=".OrderActivity" />
+        <activity android:name=".FinalizeOrderActivity" />
+        <activity android:name=".ProfileActivity"></activity>
     </application>
 
 </manifest>

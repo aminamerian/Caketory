@@ -13,16 +13,25 @@
     <string name="w_quantity">مقدار سفارش</string>
     <string name="w_totalDiscount">جمع تخفیف ها</string>
     <string name="w_finalPrice">قیمت نهایی</string>
+    <string name="w_finalizeOrder">نهایی کردن سفارش</string>
+    <string name="w_nextStep">مرحله بعد</string>
+    <string name="w_bill">صورتحساب</string>
+    <string name="w_payment">پرداخت</string>
+    <string name="w_register">ثبت اطلاعات</string>
+    <string name="w_profile">حساب کاربری</string>
 
     <string name="drawer_open">open</string>
     <string name="drawer_close">close</string>
 
-    <string name="nav_row_1">انواع محصولات</string>
-    <string name="nav_row_2">موارد مورد علاقه</string>
-    <string name="nav_row_3">کیک</string>
-    <string name="nav_row_4">شیرینی خشک</string>
-    <string name="nav_row_5">شیرینی تر</string>
-    <string name="nav_row_6">دسر</string>
+    <string name="nav_row_1">حساب کاربری</string>
+    <string name="nav_row_2">سبد خرید</string>
+    <string name="nav_row_3">موارد مورد علاقه</string>
+    <string name="nav_row_4">تاریخچه سفارشات</string>
+    <string name="nav_row_5">پیام ها</string>
+    <string name="nav_row_2_1">کیک</string>
+    <string name="nav_row_2_2">شیرینی خشک</string>
+    <string name="nav_row_2_3">شیرینی تر</string>
+    <string name="nav_row_2_4">دسر</string>
 
     <string name="action_settings">Settings</string>
     <string name="action_settings2">About Us</string>
@@ -34,65 +43,6 @@
     <string name="verified">فروش با کیفیت تضمینی</string>
     <string name="store">دسترسی به نزدیک ترین قنادی به شما</string>
     <string name="shipping">آماده ارسال به محض سفارش</string>
-    <string name="finalizeOrder">نهایی کردن سفارش</string>
-
-    <string name="text">
-        To create a dynamic and multi-pane user interface on Android,
-        you need to encapsulate UI components and activity behaviors into
-        modules that you can swap into and out of your activities.
-        You can create these modules with the Fragment class,
-        which behaves somewhat like a nested activity that can
-        define its own layout and manage its own lifecycle.
-        When a fragment specifies its own layout, it can be configured
-        in different combinations with other fragments inside an activity to
-        modify your layout configuration for different screen sizes
-        (a small screen might show one fragment at a time, but a large screen can show two or more).
-        This class shows you how to create a dynamic user experience
-        with different screen sizes, all while continuing to support devices
-        running versions as old as Android 1.6.
-        You can think of a fragment as a modular section of an activity,
-        which has its own lifecycle, receives its own input events,
-        and which you can add or remove while the activity is running
-        (sort of like a "sub activity" that you can reuse in different activities).
-        This lesson shows how to extend the Fragment class using the Support Library
-        so your app remains compatible with devices running system versions as low as Android 1.6.
-        Before you begin this lesson, you must set up your Android project to use the Support Library.
-        You can create these modules with the Fragment class.
-        You can create these modules with the Fragment class.
-        You can create these modules with the Fragment class.
-        You can create these modules with the Fragment class.
-        You can create these modules with the Fragment class.
-        You can create these modules with the Fragment class.
-        You can create these modules with the Fragment class.
-        You can create these modules with the Fragment class.
-        You can create these modules with the Fragment class.
-        You can create these modules with the Fragment class.
-        You can create these modules with the Fragment class.
-        You can create these modules with the Fragment class.
-        You can create these modules with the Fragment class.
-        You can create these modules with the Fragment class.
-        You can create these modules with the Fragment class.
-        You can create these modules with the Fragment class.
-        You can create these modules with the Fragment class.
-        You can create these modules with the Fragment class.
-        You can create these modules with the Fragment class.
-        You can create these modules with the Fragment class.
-        You can create these modules with the Fragment class.
-        You can create these modules with the Fragment class.
-
-    </string>
-
-    <string name="text2">
-        To create a dynamic and multi-pane user interface on Android,
-        you need to encapsulate UI components and activity behaviors into
-        modules that you can swap into and out of your activities.
-        You can create these modules with the Fragment class,
-        which behaves somewhat like a nested activity that can
-        define its own layout and manage its own lifecycle.
-    </string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="next">بعدی</string>
     <string name="activate">فعال سازی</string>
     <string name="enterPhoneNumber">شماره تلفن خود را وارد کنید</string>

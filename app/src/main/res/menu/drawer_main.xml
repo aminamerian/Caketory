@@ -1,37 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="none">
         <item
-            android:id="@+id/nav_all"
-            android:icon="@drawable/ic_cake"
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_account"
             android:title="@string/nav_row_1" />
         <item
-            android:id="@+id/nav_fav"
+            android:id="@+id/nav_shb"
             android:icon="@drawable/ic_shopping_cart"
             android:title="@string/nav_row_2" />
 
-        <group
-            android:id="@+id/nav_group2"
-            android:checkableBehavior="single">
-            <item
-                android:id="@+id/nav_juice"
-                android:icon="@drawable/ic_share"
-                android:title="@string/nav_row_3" />
-            <item
-                android:id="@+id/nav_recipe"
-                android:icon="@drawable/ic_share"
-                android:title="@string/nav_row_4" />
+        <item
+            android:id="@+id/nav_fav"
+            android:icon="@drawable/ic_favorite"
+            android:title="@string/nav_row_3" />
 
-            <item
-                android:id="@+id/nav_winter"
-                android:icon="@drawable/ic_share"
-                android:title="@string/nav_row_5" />
-            <item
-                android:id="@+id/nav_spring"
-                android:icon="@drawable/ic_share"
-                android:title="@string/nav_row_6" />
-        </group>
+        <item
+            android:id="@+id/nav_history"
+            android:icon="@drawable/ic_history"
+            android:title="@string/nav_row_4" />
+
+        <item
+            android:id="@+id/nav_message"
+            android:icon="@drawable/ic_message"
+            android:title="@string/nav_row_5" />
+
+        <item android:title="@string/w_categories">
+            <menu>
+                <item
+                    android:id="@+id/nav_cake"
+                    android:icon="@drawable/ic_cake"
+                    android:title="@string/nav_row_2_1" />
+                <item
+                    android:id="@+id/nav_dry"
+                    android:icon="@drawable/ic_fastfood"
+                    android:title="@string/nav_row_2_2" />
+
+                <item
+                    android:id="@+id/nav_wet"
+                    android:icon="@drawable/ic_vintage"
+                    android:title="@string/nav_row_2_3" />
+                <item
+                    android:id="@+id/nav_des"
+                    android:icon="@drawable/ic_bar"
+                    android:title="@string/nav_row_2_4" />
+            </menu>
+        </item>
     </group>
 
 </menu>
