@@ -48,4 +48,11 @@
     <string name="enterPhoneNumber">شماره تلفن خود را وارد کنید</string>
     <string name="enterSentCode">کد دریافت شده را وارد کنید</string>
     <string name="empty_basket">سبد خرید شما خالیست!</string>
+    <string name="w_name">نام و نام خانوادگی</string>
+    <string name="w_email">Valid Email</string>
+    <string name="w_phoneNumber">شماره تلفن</string>
+    <string name="w_address">آدرس</string>
+    <string name="w_logout">خروج از حساب کاربری</string>
+    <string name="w_addAccount">افزودن حساب کاربری</string>
+    <string name="w_tryAgain">تلاش دوباره</string>
 </resources>

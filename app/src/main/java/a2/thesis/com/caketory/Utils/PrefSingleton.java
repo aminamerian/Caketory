@@ -26,22 +26,32 @@ public class PrefSingleton {
         return ourInstance;
     }
 
-    public Boolean getUserHaveBeenAuthenticated() {
-        return sharedPreferences.getBoolean("userHaveAuthenticated", false);
+    public Boolean getUserHaveBeenRegistered() {
+        return sharedPreferences.getBoolean("userHaveRegistered", false);
     }
 
-    public void setUserHaveBeenAuthenticated(Boolean value) {
-        editor.putBoolean("userHaveAuthenticated", value);
+    public void setUserHaveBeenRegistered(Boolean value) {
+        editor.putBoolean("userHaveRegistered", value);
         editor.commit();
         editor.apply();
     }
 
     public String getAccessToken() {
-        return sharedPreferences.getString("accessToken", null);
+        return sharedPreferences.getString("accessToken", "0");
     }
 
     public void setAccessToken(String value) {
         editor.putString("accessToken", value);
+        editor.commit();
+        editor.apply();
+    }
+
+    public String getPhoneNumber() {
+        return sharedPreferences.getString("phoneNumber", null);
+    }
+
+    public void setPhoneNumber(String value) {
+        editor.putString("phoneNumber", value);
         editor.commit();
         editor.apply();
     }

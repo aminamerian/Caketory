@@ -71,7 +71,7 @@ public class VerifyOtpFragment extends Fragment {
                     int error = responseObj.getInt("error");
                     if (error == 0) {
                         String accessToken = responseObj.getString("access_token");
-                        PrefSingleton.getInstance(getActivity()).setUserHaveBeenAuthenticated(true);
+                        PrefSingleton.getInstance(getActivity()).setPhoneNumber(anInterface.getPhoneNumber());
                         PrefSingleton.getInstance(getActivity()).setAccessToken(accessToken);
                         startActivity(new Intent(getActivity(), MainActivity.class));
                     } else {

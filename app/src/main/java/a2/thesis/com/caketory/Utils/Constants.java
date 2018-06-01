@@ -13,6 +13,8 @@ public class Constants {
     private static String rootAddress = ServerAddress + "/Caketory/admin";
     public static String imagesDirectory = rootAddress + "/upload/images/";
 
+    public static final String checkConnectionAPI = rootAddress + "/api/check-connection.php";
+    public static final String logoutAPI = rootAddress + "/api/logout.php";
     public static final String userDataAPI = rootAddress + "/api/get-user-data.php";
     public static final String headerImageAPI = rootAddress + "/api/get-all-header-images.php";
     public static final String productAPI = rootAddress + "/api/get-all-products.php";

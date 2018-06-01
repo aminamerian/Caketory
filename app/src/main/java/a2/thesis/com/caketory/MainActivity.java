@@ -65,6 +65,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView badgeText;
     private Typeface yekanFont;
 
+    private TextView navHeaderName, navHeaderPhoneNumber;
+
+    static final int REGISTER_USER_REQUEST = 1;  // The request code for receiving result from onActivityResult
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //set drawer's item click listener
         navigationView.setNavigationItemSelectedListener(this);
         setTypefaceToNavigationView(navigationView);
+        navigationViewHeader(navigationView);
         //hiding navigation view scroll bar
         NavigationMenuView navigationMenuView = (NavigationMenuView) navigationView.getChildAt(0);
         navigationMenuView.setVerticalScrollBarEnabled(false);
@@ -166,13 +172,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void fetchData() {
 
-        CustomRequest requestUserData, requestHeaderImage, requestProduct, requestCat;
-
         Map<String, String> params = new HashMap<>();
         params.put("access_token", PrefSingleton.getInstance(this).getAccessToken());
-        params.put("orders_number", "only");
-
-        requestUserData = new CustomRequest(Request.Method.POST, Constants.userDataAPI, params, new Response.Listener<JSONObject>() {
+        params.put("user_data", "main_activity");
+        CustomRequest requestUserData = new CustomRequest(Request.Method.POST, Constants.userDataAPI, params, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 populateUserData(response);
@@ -180,10 +183,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError response) {
-                Log.d("amina2", "orders number request: " + response.toString());
+                Log.d("amina2", "user data request: " + response.toString());
             }
         });
 
+        CustomRequest requestHeaderImage, requestProduct, requestCat;
         Map<String, String> accessToken = new HashMap<>();
         accessToken.put("access_token", PrefSingleton.getInstance(this).getAccessToken());
 
@@ -232,13 +236,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int orderItemNum = 0;
         try {
             orderItemNum = response.getInt("order_items_num");
+            if (PrefSingleton.getInstance(this).getUserHaveBeenRegistered()) {
+                String name = response.getString("name");
+                String email = response.getString("email");
+                useUserNameAndEmail(name, email);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         Constants.setOrderItemNumber(orderItemNum);
         setOrderItemNumberBadge();
     }
-
 
     private void populateHeaderImageList(JSONObject response) {
         ArrayList<String> images = new ArrayList<>();
@@ -293,6 +301,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    private void useUserNameAndEmail(String name, String email) {
+        navHeaderName.setText(name);
+    }
+
     private void setOrderItemNumberBadge() {
         if (badgeText != null) {
             if (Constants.getOrderItemNumber() == 0) {
@@ -319,7 +331,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
         //navigation drawer's items click listener
         if (id == R.id.nav_profile) {
-            startActivity(new Intent(this, ProfileActivity.class));
+            startActivityForResult(new Intent(this, ProfileActivity.class), REGISTER_USER_REQUEST);
         } else if (id == R.id.nav_shb) {
             startActivity(new Intent(this, OrderActivity.class));
         } else if (id == R.id.nav_fav) {
@@ -340,6 +352,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //close drawer after any selection
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void navigationViewHeader(NavigationView navigationView) {
+        View headerLayout = navigationView.getHeaderView(0);
+        navHeaderName = headerLayout.findViewById(R.id.textView_header_name);
+        navHeaderPhoneNumber = headerLayout.findViewById(R.id.textView_header_phoneNumber);
+        navHeaderName.setTypeface(yekanFont);
+        navHeaderPhoneNumber.setTypeface(yekanFont);
+        navHeaderPhoneNumber.setText(PrefSingleton.getInstance(this).getPhoneNumber());
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REGISTER_USER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                String name = data.getStringExtra("name");
+                String email = data.getStringExtra("email");
+                useUserNameAndEmail(name, email);
+            }
+        }
     }
 
     private void setTypefaceToMenuItem(MenuItem mi) {

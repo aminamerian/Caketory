@@ -39,7 +39,7 @@
         <activity android:name=".CategoryActivity" />
         <activity android:name=".OrderActivity" />
         <activity android:name=".FinalizeOrderActivity" />
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".ProfileActivity" />
     </application>
 
 </manifest>
