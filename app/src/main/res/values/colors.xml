@@ -22,6 +22,7 @@
     <color name="black_text">#353535</color>
     <color name="dark_gray_text">#555</color>
     <color name="gray_text">#77787B</color>
+    <color name="blue_text">#0097A7</color>
 
 
     <color name="trans_dark_gray">#99000000</color>

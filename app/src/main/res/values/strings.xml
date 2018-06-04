@@ -55,4 +55,9 @@
     <string name="w_logout">خروج از حساب کاربری</string>
     <string name="w_addAccount">افزودن حساب کاربری</string>
     <string name="w_tryAgain">تلاش دوباره</string>
+    <string name="w_personalInfo">اطلاعات شخصی</string>
+    <string name="w_deliveryInfo">اطلاعات ارسال</string>
+    <string name="w_sendFactor">ارسال فاکتور به همراه خرید</string>
+    <string name="w_sendWithPeyk">ارسال با پیک</string>
+    <string name="w_sendWithCar">ارسال با آژانس</string>
 </resources>

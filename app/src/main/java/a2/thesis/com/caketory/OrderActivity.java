@@ -2,7 +2,9 @@ package a2.thesis.com.caketory;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -80,7 +82,17 @@ public class OrderActivity extends AppCompatActivity {
         finalizeOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(OrderActivity.this, FinalizeOrderActivity.class));
+                if (PrefSingleton.getInstance(OrderActivity.this).getUserHaveBeenRegistered()) {
+                    int sum = 0;
+                    for (ItemOrder orderItem : orderItemsList) {
+                        sum += (orderItem.getQuantity() * orderItem.getProductPrice());
+                    }
+                    Intent intent = new Intent(OrderActivity.this, FinalizeOrderActivity.class);
+                    intent.putExtra("FINAL_ORDER_PRICE", sum);
+                    startActivity(intent);
+                } else {
+                    firstCompleteRegistration();
+                }
             }
         });
 
@@ -236,5 +248,26 @@ public class OrderActivity extends AppCompatActivity {
         });
 
         VolleySingleton.getInstance(this).addToRequestQueue(requestCatProducts);
+    }
+
+    private void firstCompleteRegistration() {
+        Snackbar snackbar = Snackbar
+                .make(findViewById(R.id.layout_root), "ثبت نام خود را تکمیل کنید.", Snackbar.LENGTH_INDEFINITE)
+                .setAction("تکمیل ثبت نام", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(new Intent(OrderActivity.this, ProfileActivity.class));
+                    }
+                });
+        View view = snackbar.getView();
+        TextView snackbarTextView = view.findViewById(android.support.design.R.id.snackbar_text);
+        TextView snackbarActionTextView = view.findViewById(android.support.design.R.id.snackbar_action);
+        snackbarTextView.setTextColor(Color.WHITE);
+        snackbarActionTextView.setTextColor(Color.GREEN);
+        snackbarTextView.setTypeface(yekanFont);
+        snackbarActionTextView.setTypeface(yekanFont);
+        snackbarTextView.setTextSize(getResources().getDimension(R.dimen.snackbar_text));
+        snackbarActionTextView.setTextSize(getResources().getDimension(R.dimen.snackbar_text));
+        snackbar.show();
     }
 }
