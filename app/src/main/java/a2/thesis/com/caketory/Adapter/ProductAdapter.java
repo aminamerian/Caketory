@@ -33,14 +33,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
     private List<ItemProduct> productsList;
     private Typeface yekanFont;
 
-    private ImageLoader imageLoader;
-
     public ProductAdapter(Context context, ProductAdapterListener listener, List<ItemProduct> productsList) {
         this.context = context;
         productAdapterListener = listener;
         this.productsList = productsList;
         yekanFont = Typeface.createFromAsset(context.getAssets(), "fonts/b_yekan.ttf");
-        imageLoader = VolleySingleton.getInstance(context).getImageLoader();
     }
 
     @Override
@@ -59,21 +56,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         holder.name.setTypeface(yekanFont);
         holder.price.setTypeface(yekanFont);
 
-        String imagePath = itemProduct.getProductImage();
-        if (imagePath != null) {
-            imageLoader.get(Constants.imagesDirectory + imagePath, new ImageLoader.ImageListener() {
-                @Override
-                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                    // loading itemCategory cover using Glide library - efficient and no lag while scrolling
-                    Glide.with(context).load(response.getRequestUrl()).into(holder.image);
-                }
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d("amina2", error.toString());
-                }
-            });
-        }
+        String imagePath = Constants.imagesDirectory + itemProduct.getProductImage();
+        Glide.with(context)
+                .load(imagePath)
+                .fitCenter()
+                .into(holder.image);
 
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override

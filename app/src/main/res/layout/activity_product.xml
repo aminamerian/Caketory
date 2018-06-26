@@ -32,8 +32,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fitsSystemWindows="true"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/apple_pie" />
+                    android:scaleType="centerCrop" />
             </RelativeLayout>
 
             <android.support.v7.widget.Toolbar

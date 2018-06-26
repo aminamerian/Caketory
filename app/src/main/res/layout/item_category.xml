@@ -19,8 +19,7 @@
             android:id="@+id/card_image_cat"
             android:layout_width="match_parent"
             android:layout_height="115dp"
-            android:contentDescription="preview"
-            android:scaleType="centerCrop" />
+            android:contentDescription="preview"/>
 
     </android.support.v7.widget.CardView>
 

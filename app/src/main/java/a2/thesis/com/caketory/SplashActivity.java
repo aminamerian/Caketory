@@ -9,10 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -34,6 +34,7 @@ public class SplashActivity extends AppCompatActivity {
     private boolean connectedToNetwork = false;
     private boolean authenticated = false;
     private Typeface yekanFont;
+    private ImageView logo, motto;
 
 
     @Override
@@ -47,14 +48,14 @@ public class SplashActivity extends AppCompatActivity {
 
         yekanFont = Typeface.createFromAsset(getAssets(), "fonts/b_yekan.ttf");
 
+        logo = findViewById(R.id.imageView_logo);
+        motto = findViewById(R.id.imageView_motto);
+
         checkNetConnRequest(false);
-
         progressBar = findViewById(R.id.progressBar);
-        LottieAnimationView animationView = findViewById(R.id.animation_view);
-        animationView.playAnimation();
-//        animationView.loop(true);
-        animationView.addAnimatorListener(new Animator.AnimatorListener() {
 
+        logo.animate().alpha(1).setDuration(1000);
+        motto.animate().translationX(260).setDuration(1000).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
 

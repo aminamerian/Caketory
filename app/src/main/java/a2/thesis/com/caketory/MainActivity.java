@@ -24,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Typeface yekanFont;
 
     private TextView navHeaderName, navHeaderPhoneNumber;
+    private RelativeLayout navHeaderLayout;
 
     static final int REGISTER_USER_REQUEST = 1;  // The request code for receiving result from onActivityResult
 
@@ -240,6 +242,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 String name = response.getString("name");
                 String email = response.getString("email");
                 useUserNameAndEmail(name, email);
+            } else {
+                navHeaderLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivityForResult(
+                                new Intent(MainActivity.this, ProfileActivity.class), REGISTER_USER_REQUEST);
+                    }
+                });
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -328,26 +338,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        //navigation drawer's items click listener
-        if (id == R.id.nav_profile) {
-            startActivityForResult(new Intent(this, ProfileActivity.class), REGISTER_USER_REQUEST);
-        } else if (id == R.id.nav_shb) {
-            startActivity(new Intent(this, OrderActivity.class));
-        } else if (id == R.id.nav_fav) {
-            Toast.makeText(this, "Favorite Items", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_history) {
-            Toast.makeText(this, "Orders History", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_message) {
-            Toast.makeText(this, "Messages", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_cake) {
-            goToCategoryActivity(1, "کیک");
-        } else if (id == R.id.nav_dry) {
-            goToCategoryActivity(2, "شیرینی خشک");
-        } else if (id == R.id.nav_wet) {
-            goToCategoryActivity(3, "شیرینی تر");
-        } else if (id == R.id.nav_des) {
-            goToCategoryActivity(4, "دسر");
+        switch (item.getItemId()) {
+            case R.id.nav_profile:
+                startActivityForResult(new Intent(this, ProfileActivity.class), REGISTER_USER_REQUEST);
+                break;
+            case R.id.nav_shb:
+                startActivity(new Intent(this, OrderActivity.class));
+                break;
+            case R.id.nav_fav:
+                Toast.makeText(this, "Favorite Items", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_history:
+                Toast.makeText(this, "Orders History", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_message:
+                Toast.makeText(this, "Messages", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_cake:
+                goToCategoryActivity(1, "کیک");
+                break;
+            case R.id.nav_dry:
+                goToCategoryActivity(2, "شیرینی خشک");
+                break;
+            case R.id.nav_wet:
+                goToCategoryActivity(3, "شیرینی تر");
+                break;
+            case R.id.nav_des:
+                goToCategoryActivity(4, "دسر");
+                break;
         }
         //close drawer after any selection
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -356,6 +374,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void navigationViewHeader(NavigationView navigationView) {
         View headerLayout = navigationView.getHeaderView(0);
+        navHeaderLayout = headerLayout.findViewById(R.id.layout_navHeader);
         navHeaderName = headerLayout.findViewById(R.id.textView_header_name);
         navHeaderPhoneNumber = headerLayout.findViewById(R.id.textView_header_phoneNumber);
         navHeaderName.setTypeface(yekanFont);

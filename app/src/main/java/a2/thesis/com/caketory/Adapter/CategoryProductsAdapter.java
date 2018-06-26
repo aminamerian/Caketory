@@ -31,14 +31,12 @@ public class CategoryProductsAdapter extends RecyclerView.Adapter<CategoryProduc
     private Context context;
     private CategoryProductsAdapterListener categoryProductsAdapterListener;
     private List<ItemProduct> catProductsList;
-    private ImageLoader imageLoader;
     private Typeface yekanFont;
 
     public CategoryProductsAdapter(Context context, List<ItemProduct> catProductsList) {
         this.context = context;
         this.categoryProductsAdapterListener = (CategoryProductsAdapterListener) context;
         this.catProductsList = catProductsList;
-        imageLoader = VolleySingleton.getInstance(context).getImageLoader();
         yekanFont = Typeface.createFromAsset(context.getAssets(), "fonts/b_yekan.ttf");
 
     }
@@ -61,20 +59,11 @@ public class CategoryProductsAdapter extends RecyclerView.Adapter<CategoryProduc
         holder.price.setTypeface(yekanFont);
         holder.des.setTypeface(yekanFont);
 
-        String image = catProduct.getProductImage();
-        if (image != null) {
-            imageLoader.get(Constants.imagesDirectory + image, new ImageLoader.ImageListener() {
-                @Override
-                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                    Glide.with(context).load(response.getRequestUrl()).into(holder.image);
-                }
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d("amina2", error.toString());
-                }
-            });
-        }
+        String imagePath = Constants.imagesDirectory + catProduct.getProductImage();
+        Glide.with(context)
+                .load(imagePath)
+                .fitCenter()
+                .into(holder.image);
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override

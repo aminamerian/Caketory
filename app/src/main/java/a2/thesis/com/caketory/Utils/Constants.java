@@ -6,9 +6,11 @@ package a2.thesis.com.caketory.Utils;
 
 public class Constants {
 
-    private static String Localhost = "http://192.168.1.101:85";
+    private static String Localhost = "http://192.168.1.100:85";
     private static String RaspberryPi = "http://192.168.1.85";
-    private static String ServerAddress = Localhost;
+    private static String LG = "http://192.168.43.187:85";
+    private static String RaspberryPiOnLG = "http://192.168.43.85";
+    private static String ServerAddress = RaspberryPi;
 
     private static String rootAddress = ServerAddress + "/Caketory/admin";
     public static String imagesDirectory = rootAddress + "/upload/images/";

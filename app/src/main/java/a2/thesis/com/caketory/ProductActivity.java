@@ -58,7 +58,6 @@ public class ProductActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private ImageView errorImageView;
     private Typeface yekanFont;
-    private ImageLoader imageLoader;
 
     private BottomSheetBehavior sheetBehavior;
 
@@ -71,8 +70,6 @@ public class ProductActivity extends AppCompatActivity {
         setContentView(R.layout.activity_product);
         getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         yekanFont = Typeface.createFromAsset(getAssets(), "fonts/b_yekan.ttf");
-
-        imageLoader = VolleySingleton.getInstance(this).getImageLoader();
 
         progressBar = findViewById(R.id.progressBar);
         errorImageView = findViewById(R.id.imageView_ic_error);
@@ -238,44 +235,26 @@ public class ProductActivity extends AppCompatActivity {
 
         populateBottomSheet(product);
 
-        String image2Path = product.getProductImage2();
+        String image2Path = Constants.imagesDirectory + product.getProductImage2();
 
-        if (image2Path != null && !image2Path.equals("")) {
-            imageLoader.get(Constants.imagesDirectory + image2Path, new ImageLoader.ImageListener() {
-                @Override
-                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                    try {
-                        Glide.with(ProductActivity.this)
-                                .load(response.getRequestUrl())
-                                .listener(new RequestListener<String, GlideDrawable>() {
-                                    @Override
-                                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                                        Log.d("amina2", "Glide: error");
-                                        tryAgain();
-                                        return false;
-                                    }
-
-                                    @Override
-                                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                                        Log.d("amina2", "Glide: successful -is from memory cache: " + isFromMemoryCache);
-                                        loadContent();
-                                        return false;
-                                    }
-                                })
-                                .into((ImageView) findViewById(R.id.imageView_header));
-                    } catch (IllegalArgumentException e) {
+        Glide.with(ProductActivity.this)
+                .load(image2Path)
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        Log.d("amina2", "Glide: error");
+                        tryAgain();
+                        return false;
                     }
-                }
 
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d("amina2", error.toString());
-                    tryAgain();
-                }
-            });
-        } else {
-            loadContent();
-        }
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        Log.d("amina2", "Glide: successful -is from memory cache: " + isFromMemoryCache);
+                        loadContent();
+                        return false;
+                    }
+                })
+                .into((ImageView) findViewById(R.id.imageView_header));
     }
 
     private void populateBottomSheet(final ItemProduct product) {
@@ -287,8 +266,6 @@ public class ProductActivity extends AppCompatActivity {
         TextView subtitle = findViewById(R.id.textView_bottomSheet_subtitle);
         final TextView price = findViewById(R.id.textView_bottomSheet_price);
         final TextView weight = findViewById(R.id.textView_bottomSheet_weight);
-        TextView deliveryAddress = findViewById(R.id.textView_bottomSheet_deliveryAddress);
-        TextView address = findViewById(R.id.textView_bottomSheet_address);
         Button nextStep = findViewById(R.id.button_nextStep);
 
         final ImageButton increment = findViewById(R.id.imageButton_increment);
@@ -298,8 +275,6 @@ public class ProductActivity extends AppCompatActivity {
         subtitle.setTypeface(yekanFont);
         price.setTypeface(yekanFont);
         weight.setTypeface(yekanFont);
-        deliveryAddress.setTypeface(yekanFont);
-//        address.setTypeface(yekanFont);
         nextStep.setTypeface(yekanFont);
 
         title.setText(product.getProductName());

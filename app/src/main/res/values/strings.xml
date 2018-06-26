@@ -18,6 +18,7 @@
     <string name="w_bill">صورتحساب</string>
     <string name="w_payment">پرداخت</string>
     <string name="w_register">ثبت اطلاعات</string>
+    <string name="w_register_imperative">ثبت نام کنید</string>
     <string name="w_profile">حساب کاربری</string>
 
     <string name="drawer_open">open</string>

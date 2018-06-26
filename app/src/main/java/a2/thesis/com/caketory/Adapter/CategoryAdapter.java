@@ -29,13 +29,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
     private Context context;
     private CategoryAdapterListener categoryAdapterListener;
     private List<ItemCategory> categoryList;
-    private ImageLoader imageLoader;
 
     public CategoryAdapter(Context context, List<ItemCategory> categoryList) {
         this.context = context;
         this.categoryAdapterListener = (CategoryAdapterListener) context;
         this.categoryList = categoryList;
-        imageLoader = VolleySingleton.getInstance(context).getImageLoader();
     }
 
     @Override
@@ -49,21 +47,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
 
         final ItemCategory itemCategory = categoryList.get(position);
 
-        String imagePath = itemCategory.getCategoryImage();
-        if (imagePath != null) {
-            imageLoader.get(Constants.imagesDirectory + imagePath, new ImageLoader.ImageListener() {
-                @Override
-                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                    // loading itemCategory cover using Glide library - efficient and no lag while scrolling
-                    Glide.with(context).load(response.getRequestUrl()).into(holder.image);
-                }
+        String imagePath = Constants.imagesDirectory + categoryList.get(position).getCategoryImage();
+        Glide.with(context)
+                .load(imagePath)
+                .centerCrop()
+                .into(holder.image);
 
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d("amina2", error.toString());
-                }
-            });
-        }
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override

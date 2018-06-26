@@ -8,8 +8,7 @@
         android:id="@+id/image_slider"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        android:scaleType="centerCrop" />
+        android:fitsSystemWindows="true"/>
 
     <ProgressBar
         android:id="@+id/progressBar_header"

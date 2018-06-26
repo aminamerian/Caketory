@@ -31,13 +31,11 @@ public class OrderItemsAdapter extends RecyclerView.Adapter<OrderItemsAdapter.My
 
     private Context context;
     private List<ItemOrder> orderItemsList;
-    private ImageLoader imageLoader;
     private Typeface yekanFont;
 
     public OrderItemsAdapter(Context context, List<ItemOrder> orderItemsList) {
         this.context = context;
         this.orderItemsList = orderItemsList;
-        imageLoader = VolleySingleton.getInstance(context).getImageLoader();
         yekanFont = Typeface.createFromAsset(context.getAssets(), "fonts/b_yekan.ttf");
     }
 
@@ -74,20 +72,11 @@ public class OrderItemsAdapter extends RecyclerView.Adapter<OrderItemsAdapter.My
         holder.finalPriceW.setTypeface(yekanFont);
         holder.slideToDelete.setTypeface(yekanFont);
 
-        String image = itemOrder.getProductImage();
-        if (image != null) {
-            imageLoader.get(Constants.imagesDirectory + image, new ImageLoader.ImageListener() {
-                @Override
-                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                    Glide.with(context).load(response.getRequestUrl()).into(holder.image);
-                }
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d("amina2", error.toString());
-                }
-            });
-        }
+        String imagePath = Constants.imagesDirectory + itemOrder.getProductImage();
+        Glide.with(context)
+                .load(imagePath)
+                .fitCenter()
+                .into(holder.image);
     }
 
     @Override
